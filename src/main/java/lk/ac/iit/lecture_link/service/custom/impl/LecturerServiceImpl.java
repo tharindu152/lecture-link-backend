@@ -44,7 +44,7 @@ public class LecturerServiceImpl implements LecturerService {
 
         String signUrl = null;
         try {
-            if (lecturerReqDto.getPicture().getBytes().length > 0) {
+            if (Objects.nonNull(lecturerReqDto.getPicture()) && lecturerReqDto.getPicture().getBytes().length > 0) {
                 Picture picture = new Picture("lecturers/" + UUID.randomUUID());
                 picture.setLecturer(lecturer);
                 lecturer.setPicture(picture);
@@ -75,29 +75,26 @@ public class LecturerServiceImpl implements LecturerService {
         Blob blobRef = null;
 
         try {
-            if (lecturerReqDto.getPicture().getBytes().length > 0) {
+            if (Objects.nonNull(lecturerReqDto.getPicture()) && lecturerReqDto.getPicture().getBytes().length > 0) {
                 Picture picture = new Picture("lecturers/" + UUID.randomUUID());
                 newLecturer.setPicture(picture);
                 picture.setLecturer(newLecturer);
                 bucket.create(newLecturer.getPicture().getPicturePath(), lecturerReqDto.getPicture().getInputStream(),
                         lecturerReqDto.getPicture().getContentType());
-                if(Objects.nonNull(currentLecturer.getPicture())){
-                    blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
-                    if(blobRef != null) {
-                        blobRef.delete();
-                    }
+                blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
+                if(blobRef != null) {
+                    blobRef.delete();
                 }
-                pictureRepository.deletePictureByLecturer_Id(lecturerReqDto.getId());
-                lecturerRepository.save(newLecturer);
-            } else {
-                if(Objects.nonNull(currentLecturer.getPicture())){
-                    blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
-                    if(blobRef != null) {
-                        blobRef.delete();
-                    }
+                pictureRepository.deleteById(currentLecturer.getPicture().getId());
+            }else if(Objects.nonNull(currentLecturer.getPicture())){
+                blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
+                if(blobRef != null) {
+                    blobRef.delete();
                 }
-                pictureRepository.deletePictureByLecturer_Id(lecturerReqDto.getId());
+                pictureRepository.deleteById(currentLecturer.getPicture().getId());
+                newLecturer.setPicture(null);
             }
+            lecturerRepository.save(newLecturer);
         } catch (IOException e) {
             throw new AppException(500, "Failed to update the image", e);
         }
@@ -136,7 +133,7 @@ public class LecturerServiceImpl implements LecturerService {
         if (optLecturer.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
         LecturerDto lecturerDto = transformer.toLecturerDto(optLecturer.get());
 
-        if (optLecturer.get().getPicture() != null) {
+        if (Objects.nonNull(optLecturer.get().getPicture())) {
             lecturerDto.setPicture(bucket.get(optLecturer.get().getPicture().getPicturePath()).signUrl(1,
                     TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
         }
@@ -150,7 +147,7 @@ public class LecturerServiceImpl implements LecturerService {
 
         return lecturerList.stream().map(l -> {
             LecturerDto lecturerDto = transformer.toLecturerDto(l);
-            if (l.getPicture() != null) {
+            if (Objects.nonNull(l.getPicture())) {
                 lecturerDto.setPicture(bucket.get(l.getPicture().getPicturePath())
                         .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
             }
@@ -169,7 +166,7 @@ public class LecturerServiceImpl implements LecturerService {
 
         return lecturerPage.map(lecturer -> {
             LecturerDto lecturerDto = transformer.toLecturerDto(lecturer);
-            if (lecturer.getPicture() != null) {
+            if (Objects.nonNull(lecturer.getPicture())) {
                 lecturerDto.setPicture(bucket.get(lecturer.getPicture().getPicturePath())
                         .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
             }

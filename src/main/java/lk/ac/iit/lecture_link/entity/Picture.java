@@ -19,7 +19,7 @@ public class Picture implements Serializable {
     @OneToOne
     @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
     private Lecturer lecturer;
-    @Column(name = "picture_path", nullable = false, length = 400)
+    @Column(name = "picture_path", length = 400)
     private String picturePath;
 
     public Picture(String picturePath) {
