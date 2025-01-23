@@ -1,10 +1,10 @@
 package lk.ac.iit.lecture_link.entity;
 
-import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -33,10 +33,14 @@ public class Subject implements Serializable {
   @UpdateTimestamp
   @Column(name = "updated_on")
   private LocalDateTime updatedOn;
+
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   @ManyToMany(mappedBy = "subjects")
   private Set<Program> programs;
+
   @ManyToOne
-  @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
+  @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
   private Lecturer lecturer;
 }
 

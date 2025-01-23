@@ -1,9 +1,11 @@
 package lk.ac.iit.lecture_link.dto;
 
+import lk.ac.iit.lecture_link.validation.Image;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -12,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LecturerDto implements Serializable {
+public class LecturerReqDto implements Serializable {
     private long id;
     @NotBlank(message = "Lecturer name can't be empty")
     @Length(max = 255, message = "Lecturer name must not exceed 255 characters")
@@ -37,7 +39,8 @@ public class LecturerDto implements Serializable {
     private BigDecimal payRate;
     @Length(max = 255, message = "Preference must not exceed 255 characters")
     private String preference;
-    private String picture;
+    @Image
+    private MultipartFile picture;
     @NotBlank(message = "Status can't be empty")
     @Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Status must be either 'ACTIVE' or 'INACTIVE'")
     private String status;

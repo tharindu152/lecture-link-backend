@@ -1,13 +1,13 @@
 package lk.ac.iit.lecture_link.entity;
 
-import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "institute")
@@ -45,6 +45,9 @@ public class Institute implements Serializable {
   @UpdateTimestamp
   @Column(name = "updated_on")
   private LocalDateTime updatedOn;
+  @Setter(AccessLevel.NONE)
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   @OneToMany(mappedBy = "institute")
-  private List<Program> programs;
+  private Set<Program> programs;
 }

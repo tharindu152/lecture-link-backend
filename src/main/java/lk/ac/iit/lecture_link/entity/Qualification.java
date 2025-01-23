@@ -1,10 +1,13 @@
 package lk.ac.iit.lecture_link.entity;
 
-import javax.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -37,7 +40,7 @@ public class Qualification implements Serializable {
   @Column(name = "updated_on")
   private LocalDateTime updatedOn;
   @ManyToOne
-  @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
+  @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
   private Lecturer lecturer;
 }
 

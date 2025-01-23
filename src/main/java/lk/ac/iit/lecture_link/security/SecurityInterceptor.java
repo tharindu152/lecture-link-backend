@@ -2,8 +2,8 @@ package lk.ac.iit.lecture_link.security;
 
 import io.jsonwebtoken.*;
 import lk.ac.iit.lecture_link.repository.LecturerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,15 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 //@Component
+@RequiredArgsConstructor
 public class SecurityInterceptor implements HandlerInterceptor {
 
     private final SecretKey secretKey;
     private final LecturerRepository lecturerRepository;
-
-    public SecurityInterceptor(SecretKey secretKey, LecturerRepository lecturerRepository) {
-        this.secretKey = secretKey;
-        this.lecturerRepository = lecturerRepository;
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
