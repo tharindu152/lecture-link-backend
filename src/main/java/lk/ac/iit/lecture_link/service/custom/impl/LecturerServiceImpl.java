@@ -46,7 +46,6 @@ public class LecturerServiceImpl implements LecturerService {
         try {
             if (Objects.nonNull(lecturerReqDto.getPicture()) && lecturerReqDto.getPicture().getBytes().length > 0) {
                 Picture picture = new Picture("lecturers/" + UUID.randomUUID());
-                picture.setLecturer(lecturer);
                 lecturer.setPicture(picture);
                 Blob blobRef = null;
                 blobRef = bucket.create(picture.getPicturePath(), lecturerReqDto.getPicture().getInputStream(),
@@ -72,20 +71,22 @@ public class LecturerServiceImpl implements LecturerService {
                 .orElseThrow(() -> new AppException(404, LECTURER_NOT_FOUND_MSG));
 
         Lecturer newLecturer = transformer.fromLecturerReqDto(lecturerReqDto);
+        newLecturer.setPicture(null);
         Blob blobRef = null;
 
         try {
             if (Objects.nonNull(lecturerReqDto.getPicture()) && lecturerReqDto.getPicture().getBytes().length > 0) {
                 Picture picture = new Picture("lecturers/" + UUID.randomUUID());
                 newLecturer.setPicture(picture);
-                picture.setLecturer(newLecturer);
                 bucket.create(newLecturer.getPicture().getPicturePath(), lecturerReqDto.getPicture().getInputStream(),
                         lecturerReqDto.getPicture().getContentType());
-                blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
-                if(blobRef != null) {
-                    blobRef.delete();
+                if(Objects.nonNull(currentLecturer.getPicture())){
+                    blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
+                    if(blobRef != null) {
+                        blobRef.delete();
+                    }
+                    pictureRepository.deleteById(currentLecturer.getPicture().getId());
                 }
-                pictureRepository.deleteById(currentLecturer.getPicture().getId());
             }else if(Objects.nonNull(currentLecturer.getPicture())){
                 blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
                 if(blobRef != null) {
@@ -157,12 +158,9 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public Page<LecturerDto> getFilteredLecturers(String district, String status, Boolean isAssigned,
-                                                  String languages, Long subjectId,
-                                                  String qualification, Pageable pageable) {
+    public Page<LecturerDto> getFilteredLecturers(String district, String status, String languages, Pageable pageable) {
 
-        Page<Lecturer> lecturerPage = lecturerRepository.findFilteredLecturers(district, status, isAssigned, languages,
-                subjectId, qualification, pageable);
+        Page<Lecturer> lecturerPage = lecturerRepository.findFilteredLecturers(district, status, languages, pageable);
 
         return lecturerPage.map(lecturer -> {
             LecturerDto lecturerDto = transformer.toLecturerDto(lecturer);

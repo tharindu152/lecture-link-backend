@@ -22,7 +22,5 @@ public interface LecturerService extends SuperService {
 
     List<LecturerDto> getAllLecturers();
 
-    Page<LecturerDto> getFilteredLecturers(String district, String status, Boolean isAssigned,
-                                           String languages, Long subjectId,
-                                           String qualificationId, Pageable pageable);
+    Page<LecturerDto> getFilteredLecturers(String district, String status, String languages, Pageable pageable);
 }

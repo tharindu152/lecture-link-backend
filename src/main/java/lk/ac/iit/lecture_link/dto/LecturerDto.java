@@ -17,8 +17,8 @@ public class LecturerDto implements Serializable {
     @NotBlank(message = "Lecturer name can't be empty")
     @Length(max = 255, message = "Lecturer name must not exceed 255 characters")
     private String name;
-    @NotBlank(message = "Address can't be empty")
-    @Length(max = 500, message = "Address must not exceed 500 characters")
+    @NotBlank(message = "District can't be empty")
+    @Length(max = 500, message = "District must not exceed 500 characters")
     private String district;
     @NotBlank(message = "Email can't be empty")
     @Email(message = "Invalid email address")

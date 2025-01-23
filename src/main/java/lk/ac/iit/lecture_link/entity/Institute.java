@@ -25,6 +25,8 @@ public class Institute implements Serializable {
   private String password;
   @Column(nullable = false, length = 255)
   private String email;
+  @Column(nullable = false, length = 500)
+  private String district;
   @Column(length = 15)
   private String telephone;
   @Column(name = "ugc_reg_no", length = 100)
@@ -35,8 +37,6 @@ public class Institute implements Serializable {
   private String review;
   @Column(nullable = false)
   private boolean subscribed;
-  @Column(length = 1000)
-  private String logo;
   @Column(nullable = false, columnDefinition = "ENUM('ACTIVE','INACTIVE')")
   private String status;
   @CreationTimestamp
@@ -45,9 +45,21 @@ public class Institute implements Serializable {
   @UpdateTimestamp
   @Column(name = "updated_on")
   private LocalDateTime updatedOn;
+
   @Setter(AccessLevel.NONE)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   @OneToMany(mappedBy = "institute")
   private Set<Program> programs;
+
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @Setter(AccessLevel.NONE)
+  @OneToOne(mappedBy = "institute", cascade = {CascadeType.ALL})
+  private Logo logo;
+
+  public void setLogo(Logo institueLogo) {
+    if (institueLogo != null) institueLogo.setInstitute(this);
+    this.logo = institueLogo;
+  }
 }

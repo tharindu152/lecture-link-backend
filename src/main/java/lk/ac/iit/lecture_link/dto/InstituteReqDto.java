@@ -1,9 +1,11 @@
 package lk.ac.iit.lecture_link.dto;
 
+import lk.ac.iit.lecture_link.validation.Image;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -14,7 +16,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InstituteDto implements Serializable {
+public class InstituteReqDto implements Serializable {
   private long id;
   @NotBlank(message = "Institute name can't be empty")
   @Length(max = 255, message = "Institute must be less than 255 characters")
@@ -38,7 +40,8 @@ public class InstituteDto implements Serializable {
   private String review;
   @NotNull(message = "Subscription status is required")
   private boolean subscribed;
-  private String logo;
+  @Image
+  private MultipartFile logo;
   @NotBlank(message = "Status can't be empty")
   @Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Status must be either 'ACTIVE' or 'INACTIVE'")
   private String status;

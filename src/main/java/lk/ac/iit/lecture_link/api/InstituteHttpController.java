@@ -1,8 +1,8 @@
 package lk.ac.iit.lecture_link.api;
 
-import lk.ac.iit.lecture_link.dto.LecturerDto;
-import lk.ac.iit.lecture_link.dto.LecturerReqDto;
-import lk.ac.iit.lecture_link.service.custom.LecturerService;
+import lk.ac.iit.lecture_link.dto.InstituteDto;
+import lk.ac.iit.lecture_link.dto.InstituteReqDto;
+import lk.ac.iit.lecture_link.service.custom.InstituteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,62 +17,61 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/lecturers")
+@RequestMapping("/api/v1/institutes")
 @CrossOrigin
-public class LecturerHttpController {
+public class InstituteHttpController {
 
     @Autowired
-    private LecturerService lecturerService;
+    private InstituteService instituteService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "multipart/form-data", produces = "application/json")
-    public LecturerDto createNewLecturer(@ModelAttribute @Validated LecturerReqDto lecturerReqDto) {
-        return lecturerService.saveLecturer(lecturerReqDto);
+    public InstituteDto createNewInstitute(@ModelAttribute @Validated InstituteReqDto instituteReqDto) {
+        return instituteService.saveInstitute(instituteReqDto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping(value = "/{lecturer-id}", consumes = "multipart/form-data")
-    public void updateLecturerDetailsViaMultipart(@PathVariable("lecturer-id") Long lecturerId,
-                                                  @ModelAttribute @Validated LecturerReqDto lecturerReqDto) {
-        lecturerReqDto.setId(lecturerId);
-        lecturerService.updateLecturerDetails(lecturerReqDto);
+    @PatchMapping(value = "/{institute-id}", consumes = "multipart/form-data")
+    public void updateInstituteDetailsViaMultipart(@PathVariable("institute-id") Long instituteId,
+                                                  @ModelAttribute @Validated InstituteReqDto instituteReqDto) {
+        instituteReqDto.setId(instituteId);
+        instituteService.updateInstituteDetails(instituteReqDto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping(value = "/{lecturer-id}", consumes = "application/json")
-    public void updateLecturerDetailsViaJson(@PathVariable("lecturer-id") Long lecturerId,
-                                             @RequestBody @Validated LecturerDto lecturerDto) {
-        lecturerDto.setId(lecturerId);
-        lecturerService.updateLecturerDetails(lecturerDto);
+    @PatchMapping(value = "/{institute-id}", consumes = "application/json")
+    public void updateInstituteDetailsViaJson(@PathVariable("institute-id") Long instituteId,
+                                             @RequestBody @Validated InstituteReqDto instituteDto) {
+        instituteDto.setId(instituteId);
+        instituteService.updateInstituteDetails(instituteDto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{lecturer-id}")
-    public void deleteLecturer(@PathVariable("lecturer-id") Long lecturerId) {
-        lecturerService.deleteLecturer(lecturerId);
+    @DeleteMapping("/{institute-id}")
+    public void deleteInstitute(@PathVariable("institute-id") Long instituteId) {
+        instituteService.deleteInstitute(instituteId);
     }
 
     @GetMapping(produces = "application/json")
-    public List<LecturerDto> getAllLecturers() {
-        return lecturerService.getAllLecturers();
+    public List<InstituteDto> getAllInstitutes() {
+        return instituteService.getAllInstitutes();
     }
 
-    @GetMapping(value = "/{lecturer-id}", produces = "application/json")
-    public LecturerDto getLecturer(@PathVariable("lecturer-id") Long lecturerId) {
-        return lecturerService.getLecturer(lecturerId);
+    @GetMapping(value = "/{institute-id}", produces = "application/json")
+    public InstituteDto getInstitute(@PathVariable("institute-id") Long instituteId) {
+        return instituteService.getInstitute(instituteId);
     }
 
     @GetMapping(value = "/filter", produces = "application/json")
-    public Page<LecturerDto> getFilteredLecturers(
+    public Page<InstituteDto> getFilteredInstitutes(
             @RequestParam(value = "district", required = false) String district,
             @RequestParam(value = "status", required = false) String status,
-            @RequestParam(value = "languages", required = false) String languages,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id,asc") String sort) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
-        return lecturerService.getFilteredLecturers(district, status, languages, pageable);
+        return instituteService.getFilteredInstitutes(district, status, pageable);
     }
 
     private List<Sort.Order> parseSort(String sort) {
