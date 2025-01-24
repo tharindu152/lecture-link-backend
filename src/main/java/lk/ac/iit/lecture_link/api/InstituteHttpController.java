@@ -1,7 +1,7 @@
 package lk.ac.iit.lecture_link.api;
 
 import lk.ac.iit.lecture_link.dto.InstituteDto;
-import lk.ac.iit.lecture_link.dto.InstituteReqDto;
+import lk.ac.iit.lecture_link.dto.request.InstituteReqDto;
 import lk.ac.iit.lecture_link.service.custom.InstituteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,7 @@ public class InstituteHttpController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{institute-id}", consumes = "application/json")
     public void updateInstituteDetailsViaJson(@PathVariable("institute-id") Long instituteId,
-                                             @RequestBody @Validated InstituteReqDto instituteDto) {
+                                             @RequestBody @Validated InstituteDto instituteDto) {
         instituteDto.setId(instituteId);
         instituteService.updateInstituteDetails(instituteDto);
     }

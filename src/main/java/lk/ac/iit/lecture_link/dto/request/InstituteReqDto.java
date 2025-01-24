@@ -1,4 +1,4 @@
-package lk.ac.iit.lecture_link.dto;
+package lk.ac.iit.lecture_link.dto.request;
 
 import lk.ac.iit.lecture_link.validation.Image;
 import lombok.AllArgsConstructor;

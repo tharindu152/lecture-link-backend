@@ -49,7 +49,7 @@ public class Institute implements Serializable {
   @Setter(AccessLevel.NONE)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
-  @OneToMany(mappedBy = "institute")
+  @OneToMany(mappedBy = "institute", fetch = FetchType.LAZY)
   private Set<Program> programs;
 
   @ToString.Exclude

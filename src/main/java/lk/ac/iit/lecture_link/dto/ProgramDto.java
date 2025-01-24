@@ -1,18 +1,13 @@
 package lk.ac.iit.lecture_link.dto;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -36,4 +31,6 @@ public class ProgramDto implements Serializable {
   @NotNull(message = "Payment can't be null")
   @DecimalMin(value = "0.0", inclusive = false, message = "Payment must be greater than 0")
   private BigDecimal payment;
+  @NotNull(message = "InstituteId can't be null")
+  private long instituteId;
 }

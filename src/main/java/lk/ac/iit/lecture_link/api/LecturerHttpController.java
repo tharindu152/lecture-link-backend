@@ -1,7 +1,7 @@
 package lk.ac.iit.lecture_link.api;
 
 import lk.ac.iit.lecture_link.dto.LecturerDto;
-import lk.ac.iit.lecture_link.dto.LecturerReqDto;
+import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
 import lk.ac.iit.lecture_link.service.custom.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

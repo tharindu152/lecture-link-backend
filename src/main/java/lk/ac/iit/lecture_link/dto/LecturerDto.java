@@ -37,7 +37,6 @@ public class LecturerDto implements Serializable {
     private BigDecimal payRate;
     @Length(max = 255, message = "Preference must not exceed 255 characters")
     private String preference;
-    private String picture;
     @NotBlank(message = "Status can't be empty")
     @Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Status must be either 'ACTIVE' or 'INACTIVE'")
     private String status;
@@ -45,4 +44,5 @@ public class LecturerDto implements Serializable {
     private boolean isAssigned;
     @Length(max = 255, message = "Languages must not exceed 255 characters")
     private String languages;
+    private String picture;
 }

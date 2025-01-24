@@ -4,7 +4,7 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
-import lk.ac.iit.lecture_link.dto.LecturerReqDto;
+import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
 import lk.ac.iit.lecture_link.entity.Lecturer;
 import lk.ac.iit.lecture_link.entity.Picture;
 import lk.ac.iit.lecture_link.exception.AppException;

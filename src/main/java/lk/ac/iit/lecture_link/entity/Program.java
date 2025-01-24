@@ -1,10 +1,13 @@
 package lk.ac.iit.lecture_link.entity;
 
-import javax.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -41,7 +44,7 @@ public class Program implements Serializable {
   @Column(name = "updated_on")
   private LocalDateTime updatedOn;
   @ManyToOne
-  @JoinColumn(name = "institute_id", referencedColumnName = "id", nullable = false)
+  @JoinColumn(name = "institute_id", referencedColumnName = "id", nullable = false, unique = true)
   private Institute institute;
   @ManyToMany
   @JoinTable(

@@ -1,7 +1,7 @@
 package lk.ac.iit.lecture_link.service.custom;
 
 import lk.ac.iit.lecture_link.dto.LecturerDto;
-import lk.ac.iit.lecture_link.dto.LecturerReqDto;
+import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
 import lk.ac.iit.lecture_link.service.SuperService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
