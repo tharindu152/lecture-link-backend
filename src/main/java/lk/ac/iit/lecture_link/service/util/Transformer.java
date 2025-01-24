@@ -6,6 +6,7 @@ import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
 import lk.ac.iit.lecture_link.entity.Institute;
 import lk.ac.iit.lecture_link.entity.Lecturer;
 import lk.ac.iit.lecture_link.entity.Program;
+import lk.ac.iit.lecture_link.entity.Subject;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -48,6 +49,14 @@ public class Transformer {
 
     public ProgramDto toProgramDto(Program program){
         return modelMapper.map(program, ProgramDto.class);
+    }
+
+    public Subject fromSubjectDto(SubjectDto subjectDto){
+        return modelMapper.map(subjectDto, Subject.class);
+    }
+
+    public SubjectDto toSubjectDto(Subject subject){
+        return modelMapper.map(subject, SubjectDto.class);
     }
 
 }
