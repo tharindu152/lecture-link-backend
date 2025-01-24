@@ -1,5 +1,7 @@
 package lk.ac.iit.lecture_link.dto;
 
+import lk.ac.iit.lecture_link.entity.Qualification;
+import lk.ac.iit.lecture_link.entity.Subject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -45,4 +48,6 @@ public class LecturerDto implements Serializable {
     @Length(max = 255, message = "Languages must not exceed 255 characters")
     private String languages;
     private String picture;
+    private List<Subject> subjects;
+    private List<Qualification> qualifications;
 }

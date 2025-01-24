@@ -49,13 +49,13 @@ public class Institute implements Serializable {
   @Setter(AccessLevel.NONE)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
-  @OneToMany(mappedBy = "institute", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "institute", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Program> programs;
 
-  @ToString.Exclude
-  @EqualsAndHashCode.Exclude
   @Setter(AccessLevel.NONE)
-  @OneToOne(mappedBy = "institute", cascade = {CascadeType.ALL})
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  @OneToOne(mappedBy = "institute", cascade = CascadeType.ALL, orphanRemoval = true)
   private Logo logo;
 
   public void setLogo(Logo institueLogo) {

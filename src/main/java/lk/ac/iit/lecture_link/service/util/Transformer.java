@@ -3,10 +3,7 @@ package lk.ac.iit.lecture_link.service.util;
 import lk.ac.iit.lecture_link.dto.*;
 import lk.ac.iit.lecture_link.dto.request.InstituteReqDto;
 import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
-import lk.ac.iit.lecture_link.entity.Institute;
-import lk.ac.iit.lecture_link.entity.Lecturer;
-import lk.ac.iit.lecture_link.entity.Program;
-import lk.ac.iit.lecture_link.entity.Subject;
+import lk.ac.iit.lecture_link.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -57,6 +54,14 @@ public class Transformer {
 
     public SubjectDto toSubjectDto(Subject subject){
         return modelMapper.map(subject, SubjectDto.class);
+    }
+
+    public Qualification fromQualificationDto(QualificationDto qualificationDto){
+        return modelMapper.map(qualificationDto, Qualification.class);
+    }
+
+    public QualificationDto toQualificationDto(Qualification qualification){
+        return modelMapper.map(qualification, QualificationDto.class);
     }
 
 }

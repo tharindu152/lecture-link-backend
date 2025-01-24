@@ -1,5 +1,6 @@
 package lk.ac.iit.lecture_link.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -37,10 +38,12 @@ public class Subject implements Serializable {
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   @ManyToMany(mappedBy = "subjects")
+  @JsonIgnore
   private Set<Program> programs;
 
   @ManyToOne
-  @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
+  @JsonIgnore
+  @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
   private Lecturer lecturer;
 }
 

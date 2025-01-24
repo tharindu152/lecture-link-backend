@@ -1,5 +1,6 @@
 package lk.ac.iit.lecture_link.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,9 +44,12 @@ public class Program implements Serializable {
   @UpdateTimestamp
   @Column(name = "updated_on")
   private LocalDateTime updatedOn;
+
   @ManyToOne
-  @JoinColumn(name = "institute_id", referencedColumnName = "id", nullable = false, unique = true)
+  @JsonIgnore
+  @JoinColumn(name = "institute_id", referencedColumnName = "id", nullable = false)
   private Institute institute;
+
   @ManyToMany
   @JoinTable(
       name = "program_subject",

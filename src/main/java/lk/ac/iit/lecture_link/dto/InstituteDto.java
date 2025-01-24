@@ -1,5 +1,6 @@
 package lk.ac.iit.lecture_link.dto;
 
+import lk.ac.iit.lecture_link.entity.Program;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -42,4 +44,5 @@ public class InstituteDto implements Serializable {
   @NotBlank(message = "Status can't be empty")
   @Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Status must be either 'ACTIVE' or 'INACTIVE'")
   private String status;
+  private Set<Program> programs;
 }

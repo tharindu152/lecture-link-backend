@@ -1,17 +1,15 @@
 package lk.ac.iit.lecture_link.dto;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
@@ -29,8 +27,10 @@ public class QualificationDto implements Serializable {
   @Length(max = 255, message = "Discipline must not exceed 255 characters")
   private String discipline;
   @NotNull(message = "Completion date can't be null")
-  private LocalDateTime completedAt;
+  private String completedAt;
   @NotBlank(message = "Level can't be empty")
   @Pattern(regexp = "^(MSC|BSC|HND|PGD)$", message = "Level must be one of MSC, BSC, HND, or PGD")
   private String level;
+  @NotNull(message = "lecturerId can't be null")
+  private long lecturerId;
 }

@@ -16,11 +16,12 @@ public class Logo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "institute_id", referencedColumnName = "id")
-    private Institute institute;
     @Column(name = "logo_path", length = 400)
     private String logoPath;
+
+    @OneToOne
+    @JoinColumn(name = "institute_id", referencedColumnName = "id", unique = true)
+    private Institute institute;
 
     public Logo(String picturePath) {
         this.logoPath = picturePath;

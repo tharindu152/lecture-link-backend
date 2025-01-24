@@ -45,7 +45,7 @@ public class LecturerReqDto implements Serializable {
     @Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Status must be either 'ACTIVE' or 'INACTIVE'")
     private String status;
     @NotNull(message = "isAssigned can not be null")
-    private boolean isAssigned;
+    private Boolean isAssigned;
     @Length(max = 255, message = "Languages must not exceed 255 characters")
     private String languages;
 }

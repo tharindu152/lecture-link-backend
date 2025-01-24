@@ -55,19 +55,19 @@ public class Lecturer implements Serializable {
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lecturer", orphanRemoval = true)
     private List<Subject> subjects;
 
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Qualification> qualifications;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Setter(AccessLevel.NONE)
-    @OneToOne(mappedBy = "lecturer", cascade = {CascadeType.ALL})
+    @OneToOne(mappedBy = "lecturer", cascade = CascadeType.ALL)
     private Picture picture;
 
     public void setPicture(Picture profilePic) {

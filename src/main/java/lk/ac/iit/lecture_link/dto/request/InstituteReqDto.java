@@ -39,7 +39,7 @@ public class InstituteReqDto implements Serializable {
   @Length(max = 500, message = "Review must not exceed 500 characters")
   private String review;
   @NotNull(message = "Subscription status is required")
-  private boolean subscribed;
+  private Boolean subscribed;
   @Image
   private MultipartFile logo;
   @NotBlank(message = "Status can't be empty")

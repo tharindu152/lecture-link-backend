@@ -1,5 +1,6 @@
 package lk.ac.iit.lecture_link.dto;
 
+import lk.ac.iit.lecture_link.entity.Subject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -33,4 +35,5 @@ public class ProgramDto implements Serializable {
   private BigDecimal payment;
   @NotNull(message = "InstituteId can't be null")
   private long instituteId;
+  private Set<Subject> subjects;
 }
