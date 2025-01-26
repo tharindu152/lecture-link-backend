@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -60,6 +61,11 @@ public class LecturerHttpController {
     @GetMapping(value = "/{lecturer-id}", produces = "application/json")
     public LecturerDto getLecturer(@PathVariable("lecturer-id") Long lecturerId) {
         return lecturerService.getLecturer(lecturerId);
+    }
+
+    @GetMapping(value = "/institutes/{institute-id}", produces = "application/json")
+    public Set<LecturerDto> getLecturersForInstitute(@PathVariable("institute-id") Long instituteId) {
+        return lecturerService.getLecturersForInstituteId(instituteId);
     }
 
     @GetMapping(value = "/filter", produces = "application/json")

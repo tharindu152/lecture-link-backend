@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Set;
+
 public interface ProgramRepository extends JpaRepository<Program, Long> {
 
     @Query("SELECT p FROM Program p " +
@@ -22,5 +24,11 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
             @Param("durationInDays") int durationInDays,
             @Param("studentCount") int studentCount,
             Pageable pageable);
+
+    @Query("SELECT DISTINCT p FROM Program p " +
+            "JOIN p.subjects s " +
+            "WHERE s.lecturer.id = :lecturerId")
+    Set<Program> findProgramsByLecturerId(@Param("lecturerId") Long lecturerId);
+
 
 }

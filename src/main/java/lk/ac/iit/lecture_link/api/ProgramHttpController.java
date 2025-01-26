@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -51,6 +52,11 @@ public class ProgramHttpController {
     @GetMapping(value = "/{program-id}", produces = "application/json")
     public ProgramDto getProgram(@PathVariable("program-id") Long programId) {
         return programService.getProgram(programId);
+    }
+
+    @GetMapping(value = "/lecturer/{lecturer-id}", produces = "application/json")
+    public Set<ProgramDto> getProgramsForLecturer(@PathVariable("lecturer-id") Long lecturerId) {
+        return programService.getProgramsForLecturerId(lecturerId);
     }
 
     @GetMapping(value = "/filter", produces = "application/json")

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ProgramService extends SuperService {
 
@@ -18,6 +19,8 @@ public interface ProgramService extends SuperService {
     ProgramDto getProgram(Long programId);
 
     List<ProgramDto> getAllPrograms();
+
+    Set<ProgramDto> getProgramsForLecturerId(Long lecturerId);
 
     Page<ProgramDto> getFilteredPrograms(String name, String description, String level, Integer durationInDays,
                                          Integer studentCount, Pageable pageable);

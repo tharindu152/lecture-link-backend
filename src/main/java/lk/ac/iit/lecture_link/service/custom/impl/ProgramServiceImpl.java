@@ -1,8 +1,10 @@
 package lk.ac.iit.lecture_link.service.custom.impl;
 
 import lk.ac.iit.lecture_link.dto.ProgramDto;
+import lk.ac.iit.lecture_link.entity.Lecturer;
 import lk.ac.iit.lecture_link.entity.Program;
 import lk.ac.iit.lecture_link.exception.AppException;
+import lk.ac.iit.lecture_link.repository.LecturerRepository;
 import lk.ac.iit.lecture_link.repository.ProgramRepository;
 import lk.ac.iit.lecture_link.service.custom.ProgramService;
 import lk.ac.iit.lecture_link.service.util.Transformer;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,9 +25,13 @@ import java.util.stream.Collectors;
 public class ProgramServiceImpl implements ProgramService {
 
     private final ProgramRepository programRepository;
+    private final LecturerRepository lecturerRepository;
+
     private final Transformer transformer;
 
     private static final String PROGRAM_NOT_FOUND_MSG = "No program associated with the id";
+    private static final String LECTURER_NOT_FOUND_MSG = "No lecturer associated with the id";
+
 
     @Override
     public ProgramDto saveProgram(ProgramDto programDto) {
@@ -68,6 +75,15 @@ public class ProgramServiceImpl implements ProgramService {
 
         return programList.stream().map(transformer::toProgramDto).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public Set<ProgramDto> getProgramsForLecturerId(Long lecturerId){
+        Optional<Lecturer> optionalLecturer = lecturerRepository.findById(lecturerId);
+        if (optionalLecturer.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
+
+        Set<Program> institutes = programRepository.findProgramsByLecturerId(lecturerId);
+        return institutes.stream().map(transformer::toProgramDto).collect(Collectors.toSet());
     }
 
     @Override

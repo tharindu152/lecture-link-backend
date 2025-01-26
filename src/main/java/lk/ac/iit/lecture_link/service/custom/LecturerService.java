@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface LecturerService extends SuperService {
 
@@ -21,6 +22,8 @@ public interface LecturerService extends SuperService {
     LecturerDto getLecturer(Long lecturerId);
 
     List<LecturerDto> getAllLecturers();
+
+    Set<LecturerDto> getLecturersForInstituteId(Long instituteId);
 
     Page<LecturerDto> getFilteredLecturers(String district, String status, String languages, Pageable pageable);
 }

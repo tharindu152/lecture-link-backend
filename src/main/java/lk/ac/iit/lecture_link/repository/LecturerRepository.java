@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Set;
+
 public interface LecturerRepository extends JpaRepository<Lecturer, Long> {
 
     @Query("SELECT l FROM Lecturer l " +
@@ -18,4 +20,11 @@ public interface LecturerRepository extends JpaRepository<Lecturer, Long> {
             @Param("status") String status,
             @Param("languages") String languages,
             Pageable pageable);
+
+    @Query("SELECT DISTINCT l FROM Lecturer l " +
+            "JOIN l.subjects s " +
+            "JOIN s.programs p " +
+            "WHERE p.institute.id = :instituteId")
+    Set<Lecturer> findLecturersByInstituteId(@Param("instituteId") Long instituteId);
+
 }
