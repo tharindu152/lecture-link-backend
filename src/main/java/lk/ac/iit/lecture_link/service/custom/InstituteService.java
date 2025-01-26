@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface InstituteService extends SuperService {
 
@@ -21,6 +22,8 @@ public interface InstituteService extends SuperService {
     InstituteDto getInstitute(Long instituteId);
 
     List<InstituteDto> getAllInstitutes();
+
+    Set<InstituteDto> getInstitutesForLecturerId(Long lecturerId);
 
     Page<InstituteDto> getFilteredInstitutes(String district, String status, Pageable pageable);
 }

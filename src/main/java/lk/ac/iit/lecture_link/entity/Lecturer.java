@@ -55,13 +55,13 @@ public class Lecturer implements Serializable {
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "lecturer", orphanRemoval = true)
+    @OneToMany(mappedBy = "lecturer")
     private List<Subject> subjects;
 
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "lecturer", cascade = CascadeType.ALL)
     private List<Qualification> qualifications;
 
     @ToString.Exclude

@@ -10,6 +10,7 @@ import lk.ac.iit.lecture_link.entity.Picture;
 import lk.ac.iit.lecture_link.exception.AppException;
 import lk.ac.iit.lecture_link.repository.LecturerRepository;
 import lk.ac.iit.lecture_link.repository.PictureRepository;
+import lk.ac.iit.lecture_link.repository.SubjectRepository;
 import lk.ac.iit.lecture_link.service.custom.LecturerService;
 import lk.ac.iit.lecture_link.service.util.Transformer;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     private final LecturerRepository lecturerRepository;
     private final PictureRepository pictureRepository;
+    private final SubjectRepository subjectRepository;
     private final Transformer transformer;
     private final Bucket bucket;
 
@@ -121,7 +123,9 @@ public class LecturerServiceImpl implements LecturerService {
         if (Objects.nonNull(currentLecturer.getPicture())) {
             blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
             pictureRepository.delete(currentLecturer.getPicture());
-            blobRef.delete();
+            if(blobRef != null && subjectRepository.findSubjectByLecturer(currentLecturer).isEmpty()) {
+                blobRef.delete();
+            }
         }
 
         lecturerRepository.deleteById(lecturerId);

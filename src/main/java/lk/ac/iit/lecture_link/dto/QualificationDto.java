@@ -32,5 +32,5 @@ public class QualificationDto implements Serializable {
   @Pattern(regexp = "^(MSC|BSC|HND|PGD)$", message = "Level must be one of MSC, BSC, HND, or PGD")
   private String level;
   @NotNull(message = "lecturerId can't be null")
-  private long lecturerId;
+  private Long lecturerId;
 }

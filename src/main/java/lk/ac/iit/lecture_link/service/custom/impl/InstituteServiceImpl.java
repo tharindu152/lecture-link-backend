@@ -6,9 +6,11 @@ import com.google.cloud.storage.Storage;
 import lk.ac.iit.lecture_link.dto.InstituteDto;
 import lk.ac.iit.lecture_link.dto.request.InstituteReqDto;
 import lk.ac.iit.lecture_link.entity.Institute;
+import lk.ac.iit.lecture_link.entity.Lecturer;
 import lk.ac.iit.lecture_link.entity.Logo;
 import lk.ac.iit.lecture_link.exception.AppException;
 import lk.ac.iit.lecture_link.repository.InstituteRepository;
+import lk.ac.iit.lecture_link.repository.LecturerRepository;
 import lk.ac.iit.lecture_link.repository.LogoRepository;
 import lk.ac.iit.lecture_link.service.custom.InstituteService;
 import lk.ac.iit.lecture_link.service.util.Transformer;
@@ -19,10 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -33,10 +32,13 @@ public class InstituteServiceImpl implements InstituteService {
 
     private final InstituteRepository instituteRepository;
     private final LogoRepository logoRepository;
+    private final LecturerRepository lecturerRepository;
     private final Transformer transformer;
     private final Bucket bucket;
 
     private static final String INSTITUTE_NOT_FOUND_MSG = "No institute associated with the id";
+    private static final String LECTURER_NOT_FOUND_MSG = "No lecturer associated with the id";
+
 
     @Override
     public InstituteDto saveInstitute(InstituteReqDto instituteReqDto) {
@@ -154,7 +156,15 @@ public class InstituteServiceImpl implements InstituteService {
             }
             return instituteDto;
         }).collect(Collectors.toList());
+    }
 
+    @Override
+    public Set<InstituteDto> getInstitutesForLecturerId(Long lecturerId){
+        Optional<Lecturer> optionalLecturer = lecturerRepository.findById(lecturerId);
+        if (optionalLecturer.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
+
+        Set<Institute> institutes = instituteRepository.findInstitutesByLecturerId(lecturerId);
+        return institutes.stream().map(transformer::toInstituteDto).collect(Collectors.toSet());
     }
 
     @Override

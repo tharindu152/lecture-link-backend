@@ -34,6 +34,6 @@ public class ProgramDto implements Serializable {
   @DecimalMin(value = "0.0", inclusive = false, message = "Payment must be greater than 0")
   private BigDecimal payment;
   @NotNull(message = "InstituteId can't be null")
-  private long instituteId;
+  private Long instituteId;
   private Set<Subject> subjects;
 }
