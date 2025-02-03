@@ -20,17 +20,14 @@ This project is created for a Requirement Based Academic Match Making Web Applic
 
 <br>
 
+System Architectural Diagram.
+<img width="800" src="https://github.com/tharindu152/lecture-link-backend/blob/master/src/main/resources/pic/Lecture_Link_Architecture.drawio.png">
+
 Entity Relationship Diagram.
-<img width="800" src="https://github.com/tharindu152/edu-panel/blob/main/src/main/resources/img/ERD.png">
+<img width="800" src="https://github.com/tharindu152/lecture-link-backend/blob/master/src/main/resources/pic/Lecture_Link_ERD.drawio.png">
 
-Layered Architecture was followed to structure the project.
-<img width="800" src="https://github.com/tharindu152/edu-panel/blob/main/src/main/resources/img/Layered%20Architecture.png">
-
-Structure of the Repository Layer
-<img width="800" src="https://github.com/tharindu152/edu-panel/blob/main/src/main/resources/img/Repository%20Layer.png">
-
-Structure of the Service Layer
-<img width="800" src="https://github.com/tharindu152/edu-panel/blob/main/src/main/resources/img/service%20layer.png">
+UML class diagram
+<img width="800" src="https://github.com/tharindu152/lecture-link-backend/blob/master/src/main/resources/pic/UMLdiagram_LectureLink.drawio.png">
 
 ### License
 
