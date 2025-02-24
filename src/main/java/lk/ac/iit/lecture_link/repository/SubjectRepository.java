@@ -14,9 +14,9 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     @Query("SELECT s FROM Subject s " +
             "WHERE s.name LIKE %:name% " +
-            "AND s.description LIKE %:description% " +
-            "AND s.noOfCredits = :noOfCredits " +
-            "AND s.isAssigned = :isAssigned ")
+            "OR s.description LIKE %:description% " +
+            "OR s.noOfCredits = :noOfCredits " +
+            "OR s.isAssigned = :isAssigned ")
     Page<Subject> findFilteredSubjects(
             @Param("name") String name,
             @Param("description") String description,

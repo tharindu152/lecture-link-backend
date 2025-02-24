@@ -6,6 +6,7 @@ import lk.ac.iit.lecture_link.service.SuperService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -25,5 +26,12 @@ public interface LecturerService extends SuperService {
 
     Set<LecturerDto> getLecturersForInstituteId(Long instituteId);
 
-    Page<LecturerDto> getFilteredLecturers(String district, String status, String languages, Pageable pageable);
+    Page<LecturerDto> getFilteredLecturers(
+            String district,
+            BigDecimal payRateLower,
+            BigDecimal payRateUpper,
+            String qualification,
+            Boolean isAssigned,
+            String language,
+            Pageable pageable);
 }

@@ -3,7 +3,7 @@ package lk.ac.iit.lecture_link.api;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
 import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
 import lk.ac.iit.lecture_link.service.custom.LecturerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -20,10 +21,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/lecturers")
 @CrossOrigin
+@RequiredArgsConstructor
 public class LecturerHttpController {
 
-    @Autowired
-    private LecturerService lecturerService;
+    private final LecturerService lecturerService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "multipart/form-data", produces = "application/json")
@@ -71,14 +72,28 @@ public class LecturerHttpController {
     @GetMapping(value = "/filter", produces = "application/json")
     public Page<LecturerDto> getFilteredLecturers(
             @RequestParam(value = "district", required = false) String district,
-            @RequestParam(value = "status", required = false) String status,
-            @RequestParam(value = "languages", required = false) String languages,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "payRateLower", required = false) BigDecimal payRateLower,
+            @RequestParam(value = "payRateUpper", required = false) BigDecimal payRateUpper,
+            @RequestParam(value = "qualification", required = false) String qualification,
+            @RequestParam(value = "isAssigned", required = false) Boolean isAssigned,
+            @RequestParam(value = "language", required = false) String language,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
             @RequestParam(value = "sort", defaultValue = "id,asc") String sort) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
-        return lecturerService.getFilteredLecturers(district, status, languages, pageable);
+        Sort sortObj = Sort.by(parseSort(sort));
+
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+
+        return lecturerService.getFilteredLecturers(
+                district,
+                payRateLower,
+                payRateUpper,
+                qualification,
+                isAssigned,
+                language,
+                pageable
+        );
     }
 
     private List<Sort.Order> parseSort(String sort) {

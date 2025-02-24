@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -172,17 +173,28 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public Page<LecturerDto> getFilteredLecturers(String district, String status, String languages, Pageable pageable) {
+    public Page<LecturerDto> getFilteredLecturers(
+            String district,
+            BigDecimal payRateLower,
+            BigDecimal payRateUpper,
+            String qualification,
+            Boolean isAssigned,
+            String language,
+            Pageable pageable) {
 
-        Page<Lecturer> lecturerPage = lecturerRepository.findFilteredLecturers(district, status, languages, pageable);
+        Page<Lecturer> lecturerPage = lecturerRepository.findFilteredLecturers(
+                district, payRateLower, payRateUpper, qualification, isAssigned, language, pageable);
 
         return lecturerPage.map(lecturer -> {
             LecturerDto lecturerDto = transformer.toLecturerDto(lecturer);
+
             if (Objects.nonNull(lecturer.getPicture())) {
                 lecturerDto.setPicture(bucket.get(lecturer.getPicture().getPicturePath())
                         .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
             }
+
             return lecturerDto;
         });
     }
+
 }

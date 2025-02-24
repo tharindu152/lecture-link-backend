@@ -28,7 +28,7 @@ public class Program implements Serializable {
   private String name;
   @Column(length = 1000)
   private String description;
-  @Column(nullable = false, columnDefinition = "ENUM('MSC','BSC','HND','PGD')")
+  @Column(nullable = false, columnDefinition = "ENUM('MSC','BSC','HND','PGD','PHD')")
   private String level;
   @Column(name = "duration_in_days")
   private Integer durationInDays;

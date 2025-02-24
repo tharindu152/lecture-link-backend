@@ -33,7 +33,7 @@ public class Qualification implements Serializable {
   private String discipline;
   @Column(nullable = false, name = "completed_at")
   private Date completedAt;
-  @Column(nullable = false, columnDefinition = "ENUM('MSC','BSC','HND','PGD')")
+  @Column(nullable = false, columnDefinition = "ENUM('MSC','BSC','HND','PGD','PHD')")
   private String level;
   @CreationTimestamp
   @Column(name = "created_on", updatable = false)

@@ -22,7 +22,7 @@ public class ProgramDto implements Serializable {
   @Length(max = 1000, message = "Description must not exceed 1000 characters")
   private String description;
   @NotBlank(message = "Level can't be empty")
-  @Pattern(regexp = "^(MSC|BSC|HND|PGD)$", message = "Level must be one of: MSC, BSC, HND, PGD")
+  @Pattern(regexp = "^(MSC|BSC|HND|PGD|PHD)$", message = "Level must be one of: MSC, BSC, HND, PGD")
   private String level;
   @Positive(message = "Duration in days must be positive")
   private int durationInDays;
