@@ -78,7 +78,7 @@ public class LecturerHttpController {
             @RequestParam(value = "isAssigned", required = false) Boolean isAssigned,
             @RequestParam(value = "language", required = false) String language,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
+            @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id,asc") String sort) {
 
         Sort sortObj = Sort.by(parseSort(sort));
