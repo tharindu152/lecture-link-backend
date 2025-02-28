@@ -29,13 +29,14 @@ public class LecturerDto implements Serializable {
     @NotBlank(message = "Password can't be empty")
     @Length(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
     private String password;
-    @NotBlank(message = "Lecturer date of birth can't be empty")
+    @Length(min = 4, max = 255, message = "Date of birth must be between 4 and 255 characters")
     private String dob;
     @Pattern(regexp = "^(?:\\+94|0)?(?:7[01245678]\\d{7}|1\\d{8})$", message = "Invalid contact number")
     private String contactNo;
-    @Length(max = 1000, message = "Review must not exceed 1000 characters")
-    private String review;
-    @NotNull(message = "Pay rate can't be null")
+    @Min(0)
+    @Max(5)
+    private int rating;
+    private Boolean subscribed;
     @DecimalMin(value = "0.0", inclusive = false, message = "Pay rate must be greater than 0")
     private BigDecimal payRate;
     @Length(max = 255, message = "Preference must not exceed 255 characters")
@@ -43,10 +44,9 @@ public class LecturerDto implements Serializable {
     @NotBlank(message = "Status can't be empty")
     @Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Status must be either 'ACTIVE' or 'INACTIVE'")
     private String status;
-    @NotNull(message = "isAssigned can not be null")
     private Boolean isAssigned;
-    @Length(max = 255, message = "Languages must not exceed 255 characters")
-    private String languages;
+    @Length(max = 255, message = "Language must not exceed 255 characters")
+    private String language;
     private String picture;
     private List<Subject> subjects;
     private List<Qualification> qualifications;

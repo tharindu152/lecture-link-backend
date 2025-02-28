@@ -1,5 +1,6 @@
 package lk.ac.iit.lecture_link.service.custom.impl;
 
+import lk.ac.iit.lecture_link.dto.FilteredSubjectDto;
 import lk.ac.iit.lecture_link.dto.SubjectDto;
 import lk.ac.iit.lecture_link.entity.Subject;
 import lk.ac.iit.lecture_link.exception.AppException;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,12 +73,21 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Page<SubjectDto> getFilteredSubjects(String name, String description, Integer noOfCredits, Boolean isAssigned,
-                                                Pageable pageable) {
+    public Page<FilteredSubjectDto> getFilteredSubjects(
+            String district, String programLevel, Integer credits,
+            BigDecimal paymentLower, BigDecimal paymentUpper,
+            Integer durationLower, Integer durationUpper,
+            Integer studentLower, Integer studentUpper,
+            String globalSearch, Pageable pageable) {
 
-        Page<Subject> subjectPage = subjectRepository.findFilteredSubjects(name, description, noOfCredits, isAssigned,
-                pageable);
+        Page<Object[]> resultPage = subjectRepository.findFilteredSubjects(
+                district, programLevel, credits,
+                paymentLower, paymentUpper,
+                durationLower, durationUpper,
+                studentLower, studentUpper,
+                globalSearch, pageable
+        );
 
-        return subjectPage.map(transformer::toSubjectDto);
+        return resultPage.map(transformer::mapToSubjectDto);
     }
 }

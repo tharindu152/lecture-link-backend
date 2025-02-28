@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @Data
@@ -36,9 +33,9 @@ public class InstituteReqDto implements Serializable {
   private String ugcRegNo;
   @Length(max = 1000, message = "Description must not exceed 1000 characters")
   private String description;
-  @Length(max = 500, message = "Review must not exceed 500 characters")
-  private String review;
-  @NotNull(message = "Subscription status is required")
+  @Min(0)
+  @Max(5)
+  private int rating;
   private Boolean subscribed;
   @Image
   private MultipartFile logo;

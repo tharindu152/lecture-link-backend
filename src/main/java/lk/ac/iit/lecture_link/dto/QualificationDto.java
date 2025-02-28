@@ -29,7 +29,7 @@ public class QualificationDto implements Serializable {
   @NotNull(message = "Completion date can't be null")
   private String completedAt;
   @NotBlank(message = "Level can't be empty")
-  @Pattern(regexp = "^(MSC|BSC|HND|PGD|PHD)$", message = "Level must be one of MSC, BSC, HND, or PGD")
+  @Pattern(regexp = "^(MSC|BSC|HND|PGD|PHD)$", message = "Level must be one of PHD, MSC, BSC, HND, or PGD")
   private String level;
   @NotNull(message = "lecturerId can't be null")
   private Long lecturerId;

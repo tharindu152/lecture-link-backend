@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,9 +35,11 @@ public class Lecturer implements Serializable {
     private Date dob;
     @Column(length = 15, name = "contact_no")
     private String contactNo;
-    @Column(length = 1000)
-    private String review;
-    @Column(nullable = false, length = 100, name = "pay_rate")
+    @Column()
+    @Min(0)
+    @Max(5)
+    private Integer rating;
+    @Column(length = 100, name = "pay_rate")
     private BigDecimal payRate;
     @Column(length = 255)
     private String preference;
@@ -44,7 +48,9 @@ public class Lecturer implements Serializable {
     @Column(name = "is_assigned")
     private Boolean isAssigned;
     @Column(length = 255)
-    private String languages;
+    private String language;
+    @Column()
+    private boolean subscribed;
     @CreationTimestamp
     @Column(name = "created_on", updatable = false)
     private LocalDateTime createdOn;

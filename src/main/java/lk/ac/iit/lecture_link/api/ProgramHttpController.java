@@ -2,7 +2,7 @@ package lk.ac.iit.lecture_link.api;
 
 import lk.ac.iit.lecture_link.dto.ProgramDto;
 import lk.ac.iit.lecture_link.service.custom.ProgramService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/programs")
+@RequiredArgsConstructor
 @CrossOrigin
 public class ProgramHttpController {
 
-    @Autowired
-    private ProgramService programService;
+    private final ProgramService programService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = "application/json")

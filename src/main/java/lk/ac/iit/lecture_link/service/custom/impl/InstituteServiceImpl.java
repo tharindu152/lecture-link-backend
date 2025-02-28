@@ -181,4 +181,20 @@ public class InstituteServiceImpl implements InstituteService {
             return instituteDto;
         });
     }
+
+    @Override
+    public InstituteDto getInstituteByEmailAndPassword(String email, String password){
+        Optional<Institute> optionalInstitute = instituteRepository.getInstituteByEmailAndPassword(email, password);
+        if (optionalInstitute.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
+
+        return transformer.toInstituteDto(optionalInstitute.get());
+    }
+
+    @Override
+    public InstituteDto findInstituteByEmail(String email){
+        Optional<Institute> optionalInstitute = instituteRepository.findInstituteByEmail(email);
+        if (optionalInstitute.isEmpty()) throw new AppException(404, INSTITUTE_NOT_FOUND_MSG);
+
+        return transformer.toInstituteDto(optionalInstitute.get());
+    }
 }

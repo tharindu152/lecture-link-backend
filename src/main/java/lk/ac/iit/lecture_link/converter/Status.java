@@ -3,7 +3,7 @@ package lk.ac.iit.lecture_link.converter;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Status {
-    ACTIVE("active"), INACTIVE("inactive");
+    ACTIVE("ACTIVE"), INACTIVE("INACTIVE");
 
     private String status;
 

@@ -7,6 +7,8 @@ import lk.ac.iit.lecture_link.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class Transformer {
 
@@ -62,6 +64,19 @@ public class Transformer {
 
     public QualificationDto toQualificationDto(Qualification qualification){
         return modelMapper.map(qualification, QualificationDto.class);
+    }
+
+    public FilteredSubjectDto mapToSubjectDto(Object[] result) {
+        FilteredSubjectDto dto = new FilteredSubjectDto();
+        dto.setId((Long) result[0]);
+        dto.setName((String) result[1]);
+        dto.setLevel((String) result[2]);
+        dto.setNoOfCredits((Integer) result[3]);
+        dto.setStudentCount((Integer) result[4]);
+        dto.setDurationInDays((Integer) result[5]);
+        dto.setDistrict((String) result[6]);
+        dto.setPayment((BigDecimal) result[7]);
+        return dto;
     }
 
 }

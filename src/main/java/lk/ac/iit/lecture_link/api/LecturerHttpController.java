@@ -27,7 +27,7 @@ public class LecturerHttpController {
     private final LecturerService lecturerService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = "multipart/form-data", produces = "application/json")
+    @PostMapping(value = "/register", consumes = "multipart/form-data", produces = "application/json")
     public LecturerDto createNewLecturer(@ModelAttribute @Validated LecturerReqDto lecturerReqDto) {
         return lecturerService.saveLecturer(lecturerReqDto);
     }

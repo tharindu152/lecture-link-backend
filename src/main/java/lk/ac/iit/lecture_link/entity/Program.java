@@ -34,6 +34,8 @@ public class Program implements Serializable {
   private Integer durationInDays;
   @Column(name = "student_count")
   private Integer studentCount;
+  @Column(length = 255)
+  private String language;
   @Column(name = "batch_id")
   private String batchId;
   @Column(nullable = false)

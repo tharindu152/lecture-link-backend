@@ -3,7 +3,7 @@ package lk.ac.iit.lecture_link.converter;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Level {
-    PHD("PhD"), MSC("MSc"), BSC("BSc"), HND("hnd"), PGD("pgd");
+    PHD("PHD"), MSC("MSC"), BSC("BSC"), HND("HND"), PGD("PGD");
 
     private String level;
 

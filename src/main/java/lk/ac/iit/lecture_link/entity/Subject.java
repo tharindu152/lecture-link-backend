@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -23,6 +25,8 @@ public class Subject implements Serializable {
   @Column(nullable = false, length = 255)
   private String name;
   @Column(nullable = false, name = "no_of_credits")
+  @Min(0)
+  @Max(4)
   private Integer noOfCredits;
   @Column(length = 1000)
   private String description;

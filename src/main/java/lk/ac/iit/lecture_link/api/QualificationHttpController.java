@@ -2,7 +2,7 @@ package lk.ac.iit.lecture_link.api;
 
 import lk.ac.iit.lecture_link.dto.QualificationDto;
 import lk.ac.iit.lecture_link.service.custom.QualificationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/qualifications")
+@RequiredArgsConstructor
 @CrossOrigin
 public class QualificationHttpController {
 
-    @Autowired
-    private QualificationService qualificationService;
+    private final QualificationService qualificationService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = "application/json")

@@ -1,8 +1,9 @@
 package lk.ac.iit.lecture_link.api;
 
+import lk.ac.iit.lecture_link.dto.FilteredSubjectDto;
 import lk.ac.iit.lecture_link.dto.SubjectDto;
 import lk.ac.iit.lecture_link.service.custom.SubjectService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,17 +12,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/subjects")
+@RequiredArgsConstructor
 @CrossOrigin
 public class SubjectHttpController {
 
-    @Autowired
-    private SubjectService subjectService;
+    private final SubjectService subjectService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -54,17 +56,30 @@ public class SubjectHttpController {
     }
 
     @GetMapping(value = "/filter", produces = "application/json")
-    public Page<SubjectDto> getFilteredSubjects(
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "description", required = false) String description,
-            @RequestParam(value = "noOfCredits", required = false) Integer noOfCredits,
-            @RequestParam(value = "isAssigned", required = false) Boolean isAssigned,
+    public Page<FilteredSubjectDto> getFilteredSubjects(
+            @RequestParam(value = "district", required = false) String district,
+            @RequestParam(value = "programLevel", required = false) String programLevel,
+            @RequestParam(value = "credits", required = false) Integer credits,
+            @RequestParam(value = "paymentLower", required = false) BigDecimal paymentLower,
+            @RequestParam(value = "paymentUpper", required = false) BigDecimal paymentUpper,
+            @RequestParam(value = "durationLower", required = false) Integer durationLower,
+            @RequestParam(value = "durationUpper", required = false) Integer durationUpper,
+            @RequestParam(value = "studentLower", required = false) Integer studentLower,
+            @RequestParam(value = "studentUpper", required = false) Integer studentUpper,
+            @RequestParam(value = "globalSearch", required = false) String globalSearch,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id,asc") String sort) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
-        return subjectService.getFilteredSubjects(name, description, noOfCredits, isAssigned, pageable);
+
+        return subjectService.getFilteredSubjects(
+                district, programLevel, credits,
+                paymentLower, paymentUpper,
+                durationLower, durationUpper,
+                studentLower, studentUpper,
+                globalSearch, pageable
+        );
     }
 
     private List<Sort.Order> parseSort(String sort) {

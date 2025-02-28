@@ -3,7 +3,7 @@ package lk.ac.iit.lecture_link.api;
 import lk.ac.iit.lecture_link.dto.InstituteDto;
 import lk.ac.iit.lecture_link.dto.request.InstituteReqDto;
 import lk.ac.iit.lecture_link.service.custom.InstituteService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,17 +19,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/institutes")
+@RequiredArgsConstructor
 @CrossOrigin
 public class InstituteHttpController {
 
-    @Autowired
-    private InstituteService instituteService;
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = "multipart/form-data", produces = "application/json")
-    public InstituteDto createNewInstitute(@ModelAttribute @Validated InstituteReqDto instituteReqDto) {
-        return instituteService.saveInstitute(instituteReqDto);
-    }
+    private final InstituteService instituteService;
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{institute-id}", consumes = "multipart/form-data")

@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -33,9 +35,11 @@ public class Institute implements Serializable {
   private String ugcRegNo;
   @Column(length = 1000)
   private String description;
-  @Column(length = 500)
-  private String review;
-  @Column(nullable = false)
+  @Column()
+  @Min(0)
+  @Max(5)
+  private Integer rating;
+  @Column()
   private boolean subscribed;
   @Column(nullable = false, columnDefinition = "ENUM('ACTIVE','INACTIVE')")
   private String status;

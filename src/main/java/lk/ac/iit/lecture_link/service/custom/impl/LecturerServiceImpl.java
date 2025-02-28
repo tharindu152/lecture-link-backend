@@ -197,4 +197,20 @@ public class LecturerServiceImpl implements LecturerService {
         });
     }
 
+    @Override
+    public LecturerDto getLecturerByEmailAndPassword(String email, String password){
+        Optional<Lecturer> optionalLecturer = lecturerRepository.getLecturerByEmailAndPassword(email, password);
+        if (optionalLecturer.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
+
+        return transformer.toLecturerDto(optionalLecturer.get());
+    }
+
+    @Override
+    public LecturerDto findLecturerByEmail(String email){
+        Optional<Lecturer> optionalLecturer = lecturerRepository.findLecturerByEmail(email);
+        if (optionalLecturer.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
+
+        return transformer.toLecturerDto(optionalLecturer.get());
+    }
+
 }

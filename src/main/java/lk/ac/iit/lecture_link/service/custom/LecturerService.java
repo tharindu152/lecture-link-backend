@@ -34,4 +34,8 @@ public interface LecturerService extends SuperService {
             Boolean isAssigned,
             String language,
             Pageable pageable);
+
+    LecturerDto getLecturerByEmailAndPassword(String email, String password);
+
+    LecturerDto findLecturerByEmail(String email);
 }

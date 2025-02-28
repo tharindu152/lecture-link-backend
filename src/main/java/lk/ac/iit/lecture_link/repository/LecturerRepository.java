@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Set;
 
 public interface LecturerRepository extends JpaRepository<Lecturer, Long> {
@@ -18,7 +19,8 @@ public interface LecturerRepository extends JpaRepository<Lecturer, Long> {
             "AND (:payRateUpper IS NULL OR :payRateLower IS NULL OR (:payRateUpper > l.payRate AND l.payRate > :payRateLower)) " +
             "AND (:qualification IS NULL OR q.level LIKE CONCAT('%', :qualification, '%')) " +
             "AND (:isAssigned IS NULL OR l.isAssigned = :isAssigned) " +
-            "AND (:language IS NULL OR FUNCTION('FIND_IN_SET', :language, l.languages) > 0)")
+            "AND (:language IS NULL OR FUNCTION('FIND_IN_SET', :language, l.language) > 0)" +
+            "AND (:globalSearch IS NULL OR l.name LIKE CONCAT('%', :globalSearch, '%') OR l.preference LIKE CONCAT('%', :globalSearch, '%'))")
     Page<Lecturer> findFilteredLecturers(
             @Param("district") String district,
             @Param("payRateLower") BigDecimal payRateLower,
@@ -33,5 +35,9 @@ public interface LecturerRepository extends JpaRepository<Lecturer, Long> {
             "JOIN s.programs p " +
             "WHERE p.institute.id = :instituteId")
     Set<Lecturer> findLecturersByInstituteId(@Param("instituteId") Long instituteId);
+
+    Optional<Lecturer> getLecturerByEmailAndPassword(String email, String password);
+
+    Optional<Lecturer> findLecturerByEmail(String email);
 
 }
