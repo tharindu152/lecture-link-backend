@@ -12,7 +12,7 @@ public enum Role {
     }
 
     @JsonValue
-    public String getStatus() {
+    public String getRole() {
         return role;
     }
 }

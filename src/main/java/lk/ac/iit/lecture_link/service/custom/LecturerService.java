@@ -33,6 +33,7 @@ public interface LecturerService extends SuperService {
             String qualification,
             Boolean isAssigned,
             String language,
+            String globalSearch,
             Pageable pageable);
 
     LecturerDto getLecturerByEmailAndPassword(String email, String password);

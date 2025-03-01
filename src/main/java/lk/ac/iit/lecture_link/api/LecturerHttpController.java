@@ -77,6 +77,7 @@ public class LecturerHttpController {
             @RequestParam(value = "qualification", required = false) String qualification,
             @RequestParam(value = "isAssigned", required = false) Boolean isAssigned,
             @RequestParam(value = "language", required = false) String language,
+            @RequestParam(value = "globalSearch", required = false) String globalSearch,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id,asc") String sort) {
@@ -92,6 +93,7 @@ public class LecturerHttpController {
                 qualification,
                 isAssigned,
                 language,
+                globalSearch,
                 pageable
         );
     }

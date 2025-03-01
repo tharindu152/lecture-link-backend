@@ -2,6 +2,8 @@ package lk.ac.iit.lecture_link.api;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import lk.ac.iit.lecture_link.converter.Role;
+import lk.ac.iit.lecture_link.dto.AuthDto;
 import lk.ac.iit.lecture_link.dto.InstituteDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
 import lk.ac.iit.lecture_link.dto.request.InstituteReqDto;
@@ -48,20 +50,26 @@ public class AdminHttpController {
     }
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    public String login(@RequestBody Map<String, String> credentials) {
+    public AuthDto login(@RequestBody Map<String, String> credentials) {
 
         String email = credentials.get("email");
         String password = credentials.get("password");
 
+        AuthDto authDto = new AuthDto();
+
         try {
             LecturerDto lecturerDto = lecturerService.getLecturerByEmailAndPassword(email, password);
+            if (Objects.nonNull(lecturerDto)) authDto.setId(lecturerDto.getId());
+            authDto.setRole(Role.LECTURER.getRole());
             if(Objects.nonNull(lecturerDto) && !email.equals(lecturerDto.getEmail()) && !password.equals(lecturerDto.getPassword())){
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
             try {
-                InstituteDto lecturerDto = instituteService.getInstituteByEmailAndPassword(email, password);
-                if(Objects.nonNull(lecturerDto) && !email.equals(lecturerDto.getEmail()) && !password.equals(lecturerDto.getPassword())){
+                InstituteDto instituteDto = instituteService.getInstituteByEmailAndPassword(email, password);
+                if (Objects.nonNull(instituteDto)) authDto.setId(instituteDto.getId());
+                authDto.setRole(Role.INSTITUTE.getRole());
+                if(Objects.nonNull(instituteDto) && !email.equals(instituteDto.getEmail()) && !password.equals(instituteDto.getPassword())){
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
             } catch (Exception e1) {
@@ -76,9 +84,9 @@ public class AdminHttpController {
         Date expTime = Date.from(tokenExpTime.atZone(ZoneId.systemDefault()).toInstant());
         jwtBuilder.expiration(expTime);
         jwtBuilder.subject(email);
-
         jwtBuilder.signWith(secretKey);
+        authDto.setToken(jwtBuilder.compact());
 
-        return jwtBuilder.compact();
+        return authDto;
     }
 }

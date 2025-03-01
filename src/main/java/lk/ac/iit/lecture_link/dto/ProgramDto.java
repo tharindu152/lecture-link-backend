@@ -1,6 +1,5 @@
 package lk.ac.iit.lecture_link.dto;
 
-import lk.ac.iit.lecture_link.entity.Subject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,5 +36,5 @@ public class ProgramDto implements Serializable {
   private BigDecimal payment;
   @NotNull(message = "InstituteId can't be null")
   private Long instituteId;
-  private Set<Subject> subjects;
+  private Set<SubjectDto> subjects;
 }

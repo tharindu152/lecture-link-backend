@@ -152,8 +152,15 @@ public class LecturerServiceImpl implements LecturerService {
         Optional<Institute> optionalLecturer = instituteRepository.findById(instituteId);
         if (optionalLecturer.isEmpty()) throw new AppException(404, INSTITUTE_NOT_FOUND_MSG);
 
-        Set<Lecturer> institutes = lecturerRepository.findLecturersByInstituteId(instituteId);
-        return institutes.stream().map(transformer::toLecturerDto).collect(Collectors.toSet());
+        Set<Lecturer> lecturerList = lecturerRepository.findLecturersByInstituteId(instituteId);
+        return lecturerList.stream().map(l -> {
+            LecturerDto lecturerDto = transformer.toLecturerDto(l);
+            if (Objects.nonNull(l.getPicture())) {
+                lecturerDto.setPicture(bucket.get(l.getPicture().getPicturePath())
+                        .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+            }
+            return lecturerDto;
+        }).collect(Collectors.toSet());
     }
 
     @Override
@@ -169,7 +176,6 @@ public class LecturerServiceImpl implements LecturerService {
             }
             return lecturerDto;
         }).collect(Collectors.toList());
-
     }
 
     @Override
@@ -180,10 +186,11 @@ public class LecturerServiceImpl implements LecturerService {
             String qualification,
             Boolean isAssigned,
             String language,
+            String globalSearch,
             Pageable pageable) {
 
         Page<Lecturer> lecturerPage = lecturerRepository.findFilteredLecturers(
-                district, payRateLower, payRateUpper, qualification, isAssigned, language, pageable);
+                district, payRateLower, payRateUpper, qualification, isAssigned, language, globalSearch, pageable);
 
         return lecturerPage.map(lecturer -> {
             LecturerDto lecturerDto = transformer.toLecturerDto(lecturer);

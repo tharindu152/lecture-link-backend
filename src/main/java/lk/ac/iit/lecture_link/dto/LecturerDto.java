@@ -1,7 +1,5 @@
 package lk.ac.iit.lecture_link.dto;
 
-import lk.ac.iit.lecture_link.entity.Qualification;
-import lk.ac.iit.lecture_link.entity.Subject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,6 +46,6 @@ public class LecturerDto implements Serializable {
     @Length(max = 255, message = "Language must not exceed 255 characters")
     private String language;
     private String picture;
-    private List<Subject> subjects;
-    private List<Qualification> qualifications;
+    private List<SubjectDto> subjects;
+    private List<QualificationDto> qualifications;
 }
