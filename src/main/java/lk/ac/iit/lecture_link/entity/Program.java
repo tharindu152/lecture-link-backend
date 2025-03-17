@@ -28,18 +28,20 @@ public class Program implements Serializable {
   private String name;
   @Column(length = 1000)
   private String description;
-  @Column(nullable = false, columnDefinition = "ENUM('MSC','BSC','HND','PGD','PHD')")
+  @Column(nullable = false, columnDefinition = "ENUM('Doctorate','Masters','PostGraduate','Bachelors','HND','HNC')")
   private String level;
   @Column(name = "duration_in_days")
   private Integer durationInDays;
   @Column(name = "student_count")
   private Integer studentCount;
-  @Column(length = 255)
+  @Column(nullable = false, columnDefinition = "ENUM('ENGLISH','SINHALA','TAMIL')")
   private String language;
   @Column(name = "batch_id")
   private String batchId;
   @Column(nullable = false)
-  private BigDecimal payment;
+  private BigDecimal hourlyPayRate;
+  @Column(nullable = false, columnDefinition = "ENUM('Weekend','Weekday','Flexible')")
+  private String timePreference;
   @CreationTimestamp
   @Column(name = "created_on", updatable = false)
   private LocalDateTime createdOn;

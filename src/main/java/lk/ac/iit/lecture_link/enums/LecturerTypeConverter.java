@@ -1,4 +1,4 @@
-package lk.ac.iit.lecture_link.converter;
+package lk.ac.iit.lecture_link.enums;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

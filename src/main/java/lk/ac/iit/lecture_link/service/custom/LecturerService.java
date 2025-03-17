@@ -39,4 +39,8 @@ public interface LecturerService extends SuperService {
     LecturerDto getLecturerByEmailAndPassword(String email, String password);
 
     LecturerDto findLecturerByEmail(String email);
+
+    void updateLecturerRating(Long lecturerId, int newRating);
+
+    void deactivateLecturer(Long lecturerId);
 }

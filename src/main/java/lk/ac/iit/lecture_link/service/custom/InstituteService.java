@@ -30,4 +30,8 @@ public interface InstituteService extends SuperService {
     InstituteDto getInstituteByEmailAndPassword(String email, String password);
 
     InstituteDto findInstituteByEmail(String email);
+
+    void updateInstituteRating(Long instituteId, int newRating);
+
+    void deactivateInstitute(Long instituteId);
 }

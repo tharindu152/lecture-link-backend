@@ -8,6 +8,7 @@ import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
 import lk.ac.iit.lecture_link.entity.Institute;
 import lk.ac.iit.lecture_link.entity.Lecturer;
 import lk.ac.iit.lecture_link.entity.Picture;
+import lk.ac.iit.lecture_link.enums.Status;
 import lk.ac.iit.lecture_link.exception.AppException;
 import lk.ac.iit.lecture_link.repository.InstituteRepository;
 import lk.ac.iit.lecture_link.repository.LecturerRepository;
@@ -122,12 +123,16 @@ public class LecturerServiceImpl implements LecturerService {
 
         Blob blobRef = null;
 
-        if (Objects.nonNull(currentLecturer.getPicture())) {
-            blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
-            pictureRepository.delete(currentLecturer.getPicture());
-            if(blobRef != null && subjectRepository.findSubjectByLecturer(currentLecturer).isEmpty()) {
-                blobRef.delete();
+        try {
+            if (Objects.nonNull(currentLecturer.getPicture())) {
+                blobRef = bucket.get(currentLecturer.getPicture().getPicturePath());
+                pictureRepository.delete(currentLecturer.getPicture());
+                if (blobRef != null && subjectRepository.findSubjectByLecturer(currentLecturer).isEmpty()) {
+                    blobRef.delete();
+                }
             }
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to delete the image", e);
         }
 
         lecturerRepository.deleteById(lecturerId);
@@ -135,47 +140,58 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public LecturerDto getLecturer(Long lecturerId) {
-
         Optional<Lecturer> optLecturer = lecturerRepository.findById(lecturerId);
         if (optLecturer.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
         LecturerDto lecturerDto = transformer.toLecturerDto(optLecturer.get());
 
-        if (Objects.nonNull(optLecturer.get().getPicture())) {
-            lecturerDto.setPicture(bucket.get(optLecturer.get().getPicture().getPicturePath()).signUrl(1,
-                    TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+        try {
+            if (Objects.nonNull(optLecturer.get().getPicture())) {
+                lecturerDto.setPicture(bucket.get(optLecturer.get().getPicture().getPicturePath()).signUrl(1,
+                        TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+            }
+            return lecturerDto;
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to retrieve the image", e);
         }
-        return lecturerDto;
     }
 
     @Override
-    public Set<LecturerDto> getLecturersForInstituteId(Long instituteId){
+    public Set<LecturerDto> getLecturersForInstituteId(Long instituteId) {
         Optional<Institute> optionalLecturer = instituteRepository.findById(instituteId);
         if (optionalLecturer.isEmpty()) throw new AppException(404, INSTITUTE_NOT_FOUND_MSG);
 
         Set<Lecturer> lecturerList = lecturerRepository.findLecturersByInstituteId(instituteId);
-        return lecturerList.stream().map(l -> {
-            LecturerDto lecturerDto = transformer.toLecturerDto(l);
-            if (Objects.nonNull(l.getPicture())) {
-                lecturerDto.setPicture(bucket.get(l.getPicture().getPicturePath())
-                        .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
-            }
-            return lecturerDto;
-        }).collect(Collectors.toSet());
+
+        try {
+            return lecturerList.stream().map(l -> {
+                LecturerDto lecturerDto = transformer.toLecturerDto(l);
+                if (Objects.nonNull(l.getPicture())) {
+                    lecturerDto.setPicture(bucket.get(l.getPicture().getPicturePath())
+                            .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+                }
+                return lecturerDto;
+            }).collect(Collectors.toSet());
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to retrieve the image", e);
+        }
     }
 
     @Override
     public List<LecturerDto> getAllLecturers() {
-
         List<Lecturer> lecturerList = lecturerRepository.findAll();
 
-        return lecturerList.stream().map(l -> {
-            LecturerDto lecturerDto = transformer.toLecturerDto(l);
-            if (Objects.nonNull(l.getPicture())) {
-                lecturerDto.setPicture(bucket.get(l.getPicture().getPicturePath())
-                        .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
-            }
-            return lecturerDto;
-        }).collect(Collectors.toList());
+        try {
+            return lecturerList.stream().map(l -> {
+                LecturerDto lecturerDto = transformer.toLecturerDto(l);
+                if (Objects.nonNull(l.getPicture())) {
+                    lecturerDto.setPicture(bucket.get(l.getPicture().getPicturePath())
+                            .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+                }
+                return lecturerDto;
+            }).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to retrieve the image", e);
+        }
     }
 
     @Override
@@ -192,16 +208,20 @@ public class LecturerServiceImpl implements LecturerService {
         Page<Lecturer> lecturerPage = lecturerRepository.findFilteredLecturers(
                 district, payRateLower, payRateUpper, qualification, isAssigned, language, globalSearch, pageable);
 
-        return lecturerPage.map(lecturer -> {
-            LecturerDto lecturerDto = transformer.toLecturerDto(lecturer);
+        try {
+            return lecturerPage.map(lecturer -> {
+                LecturerDto lecturerDto = transformer.toLecturerDto(lecturer);
 
-            if (Objects.nonNull(lecturer.getPicture())) {
-                lecturerDto.setPicture(bucket.get(lecturer.getPicture().getPicturePath())
-                        .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
-            }
+                if (Objects.nonNull(lecturer.getPicture())) {
+                    lecturerDto.setPicture(bucket.get(lecturer.getPicture().getPicturePath())
+                            .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+                }
 
-            return lecturerDto;
-        });
+                return lecturerDto;
+            });
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to retrieve the image", e);
+        }
     }
 
     @Override
@@ -218,6 +238,27 @@ public class LecturerServiceImpl implements LecturerService {
         if (optionalLecturer.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
 
         return transformer.toLecturerDto(optionalLecturer.get());
+    }
+
+    public void updateLecturerRating(Long lecturerId, int newRating) {
+        Lecturer lecturer = lecturerRepository.findById(lecturerId)
+                .orElseThrow(() -> new AppException(404, LECTURER_NOT_FOUND_MSG));
+
+        int totalRatings = lecturer.getRatingsReceived() + 1;
+        double newAverageRating = ((lecturer.getCurrentRating() * lecturer.getRatingsReceived()) + newRating) / (double) totalRatings;
+
+        lecturer.setCurrentRating((int) Math.round(newAverageRating));
+        lecturer.setRatingsReceived(totalRatings);
+
+        lecturerRepository.save(lecturer);
+    }
+
+    public void deactivateLecturer(Long lecturerId) {
+        Lecturer lecturer = lecturerRepository.findById(lecturerId)
+                .orElseThrow(() -> new AppException(404, LECTURER_NOT_FOUND_MSG));
+
+        lecturer.setStatus(Status.INACTIVE.getStatus());
+        lecturerRepository.save(lecturer);
     }
 
 }

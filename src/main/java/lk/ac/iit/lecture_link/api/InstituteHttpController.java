@@ -62,6 +62,19 @@ public class InstituteHttpController {
         return instituteService.getInstitutesForLecturerId(lecturerId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{institute-id}/rating")
+    public void updateInstituteRating(@PathVariable("institute-id") Long instituteId,
+                                      @RequestParam("newRating") int newRating) {
+        instituteService.updateInstituteRating(instituteId, newRating);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{institute-id}/deactivate")
+    public void deactivateInstitute(@PathVariable("institute-id") Long instituteId) {
+        instituteService.deactivateInstitute(instituteId);
+    }
+
     @GetMapping(value = "/filter", produces = "application/json")
     public Page<InstituteDto> getFilteredInstitutes(
             @RequestParam(value = "district", required = false) String district,

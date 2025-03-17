@@ -33,8 +33,10 @@ public class ProgramDto implements Serializable {
   private String batchId;
   @NotNull(message = "Payment can't be null")
   @DecimalMin(value = "0.0", inclusive = false, message = "Payment must be greater than 0")
-  private BigDecimal payment;
+  private BigDecimal hourlyPayRate;
   @NotNull(message = "InstituteId can't be null")
   private Long instituteId;
+  @Length(max = 255, message = "Time preference must not exceed 255 characters")
+  private String timePreference;
   private Set<SubjectDto> subjects;
 }

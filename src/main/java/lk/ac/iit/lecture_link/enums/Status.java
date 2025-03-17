@@ -1,4 +1,4 @@
-package lk.ac.iit.lecture_link.converter;
+package lk.ac.iit.lecture_link.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

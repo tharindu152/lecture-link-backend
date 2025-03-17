@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -29,16 +30,19 @@ public class Institute implements Serializable {
   private String email;
   @Column(nullable = false, length = 500)
   private String district;
+  @Column(nullable = false, length = 1500)
+  private String mapsLocation;
   @Column(length = 15)
   private String telephone;
-  @Column(name = "ugc_reg_no", length = 100)
-  private String ugcRegNo;
   @Column(length = 1000)
   private String description;
   @Column()
   @Min(0)
   @Max(5)
-  private Integer rating;
+  private Integer currentRating;
+  @Column()
+  @Positive
+  private Integer ratingsReceived;
   @Column()
   private boolean subscribed;
   @Column(nullable = false, columnDefinition = "ENUM('ACTIVE','INACTIVE')")

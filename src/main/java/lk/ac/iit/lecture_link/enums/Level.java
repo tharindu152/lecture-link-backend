@@ -1,9 +1,9 @@
-package lk.ac.iit.lecture_link.converter;
+package lk.ac.iit.lecture_link.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Level {
-    PHD("PHD"), MSC("MSC"), BSC("BSC"), HND("HND"), PGD("PGD");
+    DOCTORATE("Doctorate"), MASTERS("Masters"), POSTGRADUATE("PostGraduate"), BACHELORS("Bachelors"), HND("HND"), HNC("HNC");
 
     private String level;
 

@@ -2,7 +2,7 @@ package lk.ac.iit.lecture_link.api;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import lk.ac.iit.lecture_link.converter.Role;
+import lk.ac.iit.lecture_link.enums.Role;
 import lk.ac.iit.lecture_link.dto.AuthDto;
 import lk.ac.iit.lecture_link.dto.InstituteDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;

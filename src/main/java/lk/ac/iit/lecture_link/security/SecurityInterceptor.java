@@ -1,7 +1,7 @@
 package lk.ac.iit.lecture_link.security;
 
 import io.jsonwebtoken.*;
-import lk.ac.iit.lecture_link.converter.Role;
+import lk.ac.iit.lecture_link.enums.Role;
 import lk.ac.iit.lecture_link.dto.InstituteDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
 import lk.ac.iit.lecture_link.service.custom.InstituteService;

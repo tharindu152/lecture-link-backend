@@ -69,6 +69,19 @@ public class LecturerHttpController {
         return lecturerService.getLecturersForInstituteId(instituteId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{lecturer-id}/rating")
+    public void updateLecturerRating(@PathVariable("lecturer-id") Long lecturerId,
+                                     @RequestParam("newRating") int newRating) {
+        lecturerService.updateLecturerRating(lecturerId, newRating);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{lecturer-id}/deactivate")
+    public void deactivateLecturer(@PathVariable("lecturer-id") Long lecturerId) {
+        lecturerService.deactivateLecturer(lecturerId);
+    }
+
     @GetMapping(value = "/filter", produces = "application/json")
     public Page<LecturerDto> getFilteredLecturers(
             @RequestParam(value = "district", required = false) String district,

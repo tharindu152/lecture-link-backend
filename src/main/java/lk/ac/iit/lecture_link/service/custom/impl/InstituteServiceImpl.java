@@ -8,6 +8,7 @@ import lk.ac.iit.lecture_link.dto.request.InstituteReqDto;
 import lk.ac.iit.lecture_link.entity.Institute;
 import lk.ac.iit.lecture_link.entity.Lecturer;
 import lk.ac.iit.lecture_link.entity.Logo;
+import lk.ac.iit.lecture_link.enums.Status;
 import lk.ac.iit.lecture_link.exception.AppException;
 import lk.ac.iit.lecture_link.repository.InstituteRepository;
 import lk.ac.iit.lecture_link.repository.LecturerRepository;
@@ -120,10 +121,14 @@ public class InstituteServiceImpl implements InstituteService {
 
         Blob blobRef = null;
 
-        if (Objects.nonNull(currentInstitute.getLogo())) {
-            blobRef = bucket.get(currentInstitute.getLogo().getLogoPath());
-            logoRepository.delete(currentInstitute.getLogo());
-            blobRef.delete();
+        try {
+            if (Objects.nonNull(currentInstitute.getLogo())) {
+                blobRef = bucket.get(currentInstitute.getLogo().getLogoPath());
+                logoRepository.delete(currentInstitute.getLogo());
+                blobRef.delete();
+            }
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to delete the image", e);
         }
 
         instituteRepository.deleteById(instituteId);
@@ -136,26 +141,34 @@ public class InstituteServiceImpl implements InstituteService {
         if (optInstitute.isEmpty()) throw new AppException(404, INSTITUTE_NOT_FOUND_MSG);
         InstituteDto instituteDto = transformer.toInstituteDto(optInstitute.get());
 
-        if (Objects.nonNull(optInstitute.get().getLogo())) {
-            instituteDto.setLogo(bucket.get(optInstitute.get().getLogo().getLogoPath()).signUrl(1,
-                    TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+        try {
+            if (Objects.nonNull(optInstitute.get().getLogo())) {
+                instituteDto.setLogo(bucket.get(optInstitute.get().getLogo().getLogoPath()).signUrl(1,
+                        TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+            }
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to retrieve the image", e);
         }
+
         return instituteDto;
     }
 
     @Override
     public List<InstituteDto> getAllInstitutes() {
-
         List<Institute> instituteList = instituteRepository.findAll();
 
-        return instituteList.stream().map(l -> {
-            InstituteDto instituteDto = transformer.toInstituteDto(l);
-            if (Objects.nonNull(l.getLogo())) {
-                instituteDto.setLogo(bucket.get(l.getLogo().getLogoPath())
-                        .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
-            }
-            return instituteDto;
-        }).collect(Collectors.toList());
+        try {
+            return instituteList.stream().map(l -> {
+                InstituteDto instituteDto = transformer.toInstituteDto(l);
+                if (Objects.nonNull(l.getLogo())) {
+                    instituteDto.setLogo(bucket.get(l.getLogo().getLogoPath())
+                            .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+                }
+                return instituteDto;
+            }).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to retrieve the image", e);
+        }
     }
 
     @Override
@@ -169,17 +182,19 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     public Page<InstituteDto> getFilteredInstitutes(String district, String status, Pageable pageable) {
-
         Page<Institute> institutePage = instituteRepository.findFilteredInstitutes(district, status, pageable);
-
-        return institutePage.map(institute -> {
-            InstituteDto instituteDto = transformer.toInstituteDto(institute);
-            if (Objects.nonNull(institute.getLogo())) {
-                instituteDto.setLogo(bucket.get(institute.getLogo().getLogoPath())
-                        .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
-            }
-            return instituteDto;
-        });
+        try {
+            return institutePage.map(institute -> {
+                InstituteDto instituteDto = transformer.toInstituteDto(institute);
+                if (Objects.nonNull(institute.getLogo())) {
+                    instituteDto.setLogo(bucket.get(institute.getLogo().getLogoPath())
+                            .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+                }
+                return instituteDto;
+            });
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to retrieve the image", e);
+        }
     }
 
     @Override
@@ -196,5 +211,26 @@ public class InstituteServiceImpl implements InstituteService {
         if (optionalInstitute.isEmpty()) throw new AppException(404, INSTITUTE_NOT_FOUND_MSG);
 
         return transformer.toInstituteDto(optionalInstitute.get());
+    }
+
+    public void updateInstituteRating(Long instituteId, int newRating) {
+        Institute institute = instituteRepository.findById(instituteId)
+                .orElseThrow(() -> new AppException(404, INSTITUTE_NOT_FOUND_MSG));
+
+        int totalRatings = institute.getRatingsReceived() + 1;
+        double newAverageRating = ((institute.getCurrentRating() * institute.getRatingsReceived()) + newRating) / (double) totalRatings;
+
+        institute.setCurrentRating((int) Math.round(newAverageRating));
+        institute.setRatingsReceived(totalRatings);
+
+        instituteRepository.save(institute);
+    }
+
+    public void deactivateInstitute(Long instituteId) {
+        Institute institute = instituteRepository.findById(instituteId)
+                .orElseThrow(() -> new AppException(404, INSTITUTE_NOT_FOUND_MSG));
+
+        institute.setStatus(Status.INACTIVE.getStatus());
+        instituteRepository.save(institute);
     }
 }
