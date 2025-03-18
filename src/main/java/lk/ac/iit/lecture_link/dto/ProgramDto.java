@@ -21,13 +21,13 @@ public class ProgramDto implements Serializable {
   @Length(max = 1000, message = "Description must not exceed 1000 characters")
   private String description;
   @NotBlank(message = "Level can't be empty")
-  @Pattern(regexp = "^(MSC|BSC|HND|PGD|PHD)$", message = "Level must be one of: PHD, MSC, BSC, HND, PGD")
+  @Pattern(regexp = "^(DOCTORATE|MASTERS|POSTGRADUATE|BACHELORS|HND|HNC)$", message = "Level must be one of: DOCTORATE, MASTERS, POSTGRADUATE, BACHELORS, HND, HNC")
   private String level;
   @Positive(message = "Duration in days must be positive")
   private int durationInDays;
   @Positive(message = "Student count must be positive")
   private int studentCount;
-  @Length(max = 255, message = "Language must not exceed 255 characters")
+  @Pattern(regexp = "^(ENGLISH|SINHALA|TAMIL)$", message = "Language must be 'ENGLISH', 'SINHALA' or 'TAMIL'")
   private String language;
   @Length(max = 255, message = "Batch ID must not exceed 255 characters")
   private String batchId;
@@ -36,7 +36,7 @@ public class ProgramDto implements Serializable {
   private BigDecimal hourlyPayRate;
   @NotNull(message = "InstituteId can't be null")
   private Long instituteId;
-  @Length(max = 255, message = "Time preference must not exceed 255 characters")
+  @Pattern(regexp = "^(WEEKEND|WEEKDAY|FLEXIBLE)$", message = "Time preference must be 'WEEKEND', 'WEEKDAY' or 'FLEXIBLE'")
   private String timePreference;
   private Set<SubjectDto> subjects;
 }

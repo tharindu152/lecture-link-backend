@@ -3,7 +3,7 @@ package lk.ac.iit.lecture_link.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TimePreference {
-    WEEKEND("Weekend"), WEEKDAY("Weekday"), FLEXIBLE("Flexible");
+    WEEKEND("WEEKEND"), WEEKDAY("WEEKDAY"), FLEXIBLE("FLEXIBLE");
 
     private String timePreference;
 

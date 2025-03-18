@@ -19,7 +19,7 @@ public class LecturerReqDto implements Serializable {
     @NotBlank(message = "Lecturer name can't be empty")
     @Length(max = 255, message = "Lecturer name must not exceed 255 characters")
     private String name;
-    @NotBlank(message = "Address can't be empty")
+    @NotBlank(message = "District can't be empty")
     @Length(max = 500, message = "District must not exceed 500 characters")
     private String district;
     @NotBlank(message = "Maps location can't be empty")
@@ -51,9 +51,9 @@ public class LecturerReqDto implements Serializable {
     private int lecturingExperience;
     @Length(max = 255, message = "Field of work must not exceed 255 characters")
     private String fieldOfWork;
-    @Length(max = 255, message = "Time preference must not exceed 255 characters")
+    @Pattern(regexp = "^(WEEKEND|WEEKDAY|FLEXIBLE)$", message = "Time preference must be 'WEEKEND', 'WEEKDAY' or 'FLEXIBLE'")
     private String timePreference;
     private Boolean isAssigned;
-    @Length(max = 255, message = "Languages must not exceed 255 characters")
+    @Pattern(regexp = "^(ENGLISH|SINHALA|TAMIL)$", message = "Language must be 'ENGLISH', 'SINHALA' or 'TAMIL'")
     private String language;
 }
