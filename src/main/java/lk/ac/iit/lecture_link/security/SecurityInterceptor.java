@@ -1,9 +1,9 @@
 package lk.ac.iit.lecture_link.security;
 
 import io.jsonwebtoken.*;
-import lk.ac.iit.lecture_link.enums.Role;
 import lk.ac.iit.lecture_link.dto.InstituteDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
+import lk.ac.iit.lecture_link.enums.Role;
 import lk.ac.iit.lecture_link.service.custom.InstituteService;
 import lk.ac.iit.lecture_link.service.custom.LecturerService;
 import lombok.RequiredArgsConstructor;
@@ -36,27 +36,28 @@ public class SecurityInterceptor implements HandlerInterceptor {
                 || endpoint.equalsIgnoreCase("/api/v1/register/lecturer")
                 || endpoint.equalsIgnoreCase("/api/v1/register/institute")
                 || endpoint.equalsIgnoreCase("/error")
+                || endpoint.equalsIgnoreCase("/api/v1/email/send")
                 || request.getMethod().equalsIgnoreCase("OPTIONS"))
             return true;
 
         String authorization = request.getHeader("Authorization");
         if (authorization != null && authorization.toUpperCase().startsWith("BEARER")) {
-                String token = authorization.substring(7);
-                JwtParserBuilder jwtParserBuilder = Jwts.parser().requireIssuer(issuer);
-                try {
-                    Jws<Claims> jwt = jwtParserBuilder.verifyWith(secretKey).build().parseSignedClaims(token);
-                    Object email = jwt.getPayload().get("sub");
-                    if (Role.INSTITUTE.name().equals(request.getHeader("role"))) {
-                        InstituteDto instituteDto = instituteService.findInstituteByEmail(email.toString());
-                        if (Objects.nonNull(instituteDto) && email.equals(instituteDto.getEmail())) return true;
-                    } else if (Role.LECTURER.name().equals(request.getHeader("role"))) {
-                        LecturerDto lecturerDto = lecturerService.findLecturerByEmail(email.toString());
-                        if (Objects.nonNull(lecturerDto) && email.equals(lecturerDto.getEmail())) return true;
-                    }
-                } catch (JwtException exp) {
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            String token = authorization.substring(7);
+            JwtParserBuilder jwtParserBuilder = Jwts.parser().requireIssuer(issuer);
+            try {
+                Jws<Claims> jwt = jwtParserBuilder.verifyWith(secretKey).build().parseSignedClaims(token);
+                Object email = jwt.getPayload().get("sub");
+                if (Role.INSTITUTE.name().equals(request.getHeader("role"))) {
+                    InstituteDto instituteDto = instituteService.findInstituteByEmail(email.toString());
+                    if (Objects.nonNull(instituteDto) && email.equals(instituteDto.getEmail())) return true;
+                } else if (Role.LECTURER.name().equals(request.getHeader("role"))) {
+                    LecturerDto lecturerDto = lecturerService.findLecturerByEmail(email.toString());
+                    if (Objects.nonNull(lecturerDto) && email.equals(lecturerDto.getEmail())) return true;
                 }
+            } catch (JwtException exp) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
             }
+        }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 }

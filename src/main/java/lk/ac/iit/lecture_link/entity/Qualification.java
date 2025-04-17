@@ -33,7 +33,7 @@ public class Qualification implements Serializable {
   private String discipline;
   @Column(nullable = false, name = "completed_at")
   private Date completedAt;
-  @Column(nullable = false, columnDefinition = "ENUM('Doctorate','Masters','PostGraduate','Bachelors','HND', 'HNC')")
+  @Column(nullable = false, columnDefinition = "ENUM('DOCTORATE','MASTERS','POSTGRADUATE','BACHELORS','HND','HNC')")
   private String level;
   @CreationTimestamp
   @Column(name = "created_on", updatable = false)
@@ -47,4 +47,3 @@ public class Qualification implements Serializable {
   @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
   private Lecturer lecturer;
 }
-

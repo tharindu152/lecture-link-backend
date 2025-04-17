@@ -32,7 +32,7 @@ public class QualificationHttpController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{qualification-id}", consumes = "application/json")
     public void updateQualificationDetailsViaJson(@PathVariable("qualification-id") Long qualificationId,
-                                             @RequestBody @Validated QualificationDto qualificationDto) {
+                                                  @RequestBody @Validated QualificationDto qualificationDto) {
         qualificationDto.setId(qualificationId);
         qualificationService.updateQualificationDetails(qualificationDto);
     }
