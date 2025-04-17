@@ -33,7 +33,7 @@ public class ProgramHttpController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{program-id}", consumes = "application/json")
     public void updateProgramDetailsViaJson(@PathVariable("program-id") Long programId,
-                                             @RequestBody @Validated ProgramDto programDto) {
+                                            @RequestBody @Validated ProgramDto programDto) {
         programDto.setId(programId);
         programService.updateProgramDetails(programDto);
     }
