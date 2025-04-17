@@ -21,7 +21,6 @@ public interface SubjectService extends SuperService {
 
     List<SubjectDto> getAllSubjects();
 
-
     Page<FilteredSubjectDto> getFilteredSubjects(
             String district, String programLevel, Integer credits,
             BigDecimal paymentLower, BigDecimal paymentUpper,

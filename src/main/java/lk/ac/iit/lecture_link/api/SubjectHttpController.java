@@ -34,7 +34,7 @@ public class SubjectHttpController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{subject-id}", consumes = "application/json")
     public void updateSubjectDetailsViaJson(@PathVariable("subject-id") Long subjectId,
-                                             @RequestBody @Validated SubjectDto subjectDto) {
+                                            @RequestBody @Validated SubjectDto subjectDto) {
         subjectDto.setId(subjectId);
         subjectService.updateSubjectDetails(subjectDto);
     }

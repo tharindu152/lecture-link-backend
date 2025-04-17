@@ -50,4 +50,3 @@ public class Subject implements Serializable {
   @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
   private Lecturer lecturer;
 }
-

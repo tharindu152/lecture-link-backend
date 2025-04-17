@@ -13,14 +13,14 @@ import java.util.List;
 
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
-    @Query(value = "SELECT DISTINCT s.id, s.name, p.level, s.noOfCredits, p.studentCount, p.durationInDays, i.district, p.payment " +
+    @Query(value = "SELECT DISTINCT s.id, s.name, p.level, s.noOfCredits, p.studentCount, p.durationInDays, i.district, p.hourlyPayRate " +
             "FROM Subject s " +
             "JOIN s.programs p " +
             "JOIN p.institute i " +
             "WHERE (:district IS NULL OR i.district LIKE CONCAT('%', :district, '%')) " +
             "  AND (:programLevel IS NULL OR p.level LIKE CONCAT('%', :programLevel, '%')) " +
             "  AND (:credits IS NULL OR s.noOfCredits = :credits) " +
-            "  AND (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.payment > :paymentLower AND p.payment < :paymentUpper)) " +
+            "  AND (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.hourlyPayRate > :paymentLower AND p.hourlyPayRate < :paymentUpper)) " +
             "  AND (:durationUpper IS NULL OR :durationLower IS NULL OR (p.durationInDays > :durationLower AND p.durationInDays < :durationUpper)) " +
             "  AND (:studentUpper IS NULL OR :studentLower IS NULL OR (p.studentCount > :studentLower AND p.studentCount < :studentUpper)) " +
             "  AND (:globalSearch IS NULL OR s.name LIKE CONCAT('%', :globalSearch, '%') OR s.description LIKE CONCAT('%', :globalSearch, '%'))",
@@ -31,7 +31,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
                     "WHERE (:district IS NULL OR i.district LIKE CONCAT('%', :district, '%')) " +
                     "  AND (:programLevel IS NULL OR p.level LIKE CONCAT('%', :programLevel, '%')) " +
                     "  AND (:credits IS NULL OR s.noOfCredits = :credits) " +
-                    "  AND (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.payment > :paymentLower AND p.payment < :paymentUpper)) " +
+                    "  AND (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.hourlyPayRate > :paymentLower AND p.hourlyPayRate < :paymentUpper)) " +
                     "  AND (:durationUpper IS NULL OR :durationLower IS NULL OR (p.durationInDays > :durationLower AND p.durationInDays < :durationUpper)) " +
                     "  AND (:studentUpper IS NULL OR :studentLower IS NULL OR (p.studentCount > :studentLower AND p.studentCount < :studentUpper)) " +
                     "  AND (:globalSearch IS NULL OR s.name LIKE CONCAT('%', :globalSearch, '%') OR s.description LIKE CONCAT('%', :globalSearch, '%'))")
