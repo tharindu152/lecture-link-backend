@@ -43,4 +43,6 @@ public interface LecturerService extends SuperService {
     void updateLecturerRating(Long lecturerId, int newRating);
 
     void deactivateLecturer(Long lecturerId);
+
+    void updateLecturerSubscription(Long lecturerId, boolean subscribed);
 }

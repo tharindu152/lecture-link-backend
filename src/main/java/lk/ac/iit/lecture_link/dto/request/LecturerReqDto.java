@@ -22,7 +22,6 @@ public class LecturerReqDto implements Serializable {
     @NotBlank(message = "District can't be empty")
     @Length(max = 500, message = "District must not exceed 500 characters")
     private String district;
-    @NotBlank(message = "Maps location can't be empty")
     private String mapsLocation;
     @NotBlank(message = "Email can't be empty")
     @Email(message = "Invalid email address")
@@ -35,7 +34,6 @@ public class LecturerReqDto implements Serializable {
     @Min(0)
     @Max(5)
     private int currentRating;
-    @Positive
     private int ratingsReceived;
     private Boolean subscribed;
     @DecimalMin(value = "0.0", inclusive = false, message = "Pay rate must be greater than 0")
@@ -47,7 +45,6 @@ public class LecturerReqDto implements Serializable {
     @NotBlank(message = "Status can't be empty")
     @Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Status must be either 'ACTIVE' or 'INACTIVE'")
     private String status;
-    @Positive
     private int lecturingExperience;
     @Length(max = 255, message = "Field of work must not exceed 255 characters")
     private String fieldOfWork;

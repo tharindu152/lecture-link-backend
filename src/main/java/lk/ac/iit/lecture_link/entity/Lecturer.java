@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,7 +26,7 @@ public class Lecturer implements Serializable {
     private String name;
     @Column(nullable = false, length = 500)
     private String district;
-    @Column(nullable = false, length = 1500)
+    @Column(length = 1500)
     private String mapsLocation;
     @Column(nullable = false, length = 255)
     private String email;
@@ -40,24 +39,22 @@ public class Lecturer implements Serializable {
     @Max(5)
     private Integer currentRating;
     @Column()
-    @Positive
     private Integer ratingsReceived;
-    @Column(length = 100, name = "pay_rate")
+    @Column()
     private BigDecimal hourlyPayRate;
     @Column(length = 255)
     private String preference;
-    @Column(nullable = false, columnDefinition = "ENUM('ACTIVE','INACTIVE')")
+    @Column(columnDefinition = "ENUM('ACTIVE','INACTIVE')")
     private String status;
     @Column(name = "is_assigned")
     private Boolean isAssigned;
-    @Column(nullable = false, columnDefinition = "ENUM('ENGLISH','SINHALA','TAMIL')")
+    @Column(columnDefinition = "ENUM('ENGLISH','SINHALA','TAMIL')")
     private String language;
     @Column()
-    @Positive
     private Integer lecturingExperience;
     @Column(length = 255)
     private String fieldOfWork;
-    @Column(nullable = false, columnDefinition = "ENUM('Weekend','Weekday','Flexible')")
+    @Column(columnDefinition = "ENUM('WEEKDAY','WEEKEND','FLEXIBLE')")
     private String timePreference;
     @Column()
     private boolean subscribed;

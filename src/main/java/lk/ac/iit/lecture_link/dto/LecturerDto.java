@@ -21,7 +21,6 @@ public class LecturerDto implements Serializable {
     @NotBlank(message = "District can't be empty")
     @Length(max = 500, message = "District must not exceed 500 characters")
     private String district;
-    @NotBlank(message = "Maps location can't be empty")
     private String mapsLocation;
     @NotBlank(message = "Email can't be empty")
     @Email(message = "Invalid email address")
@@ -34,7 +33,6 @@ public class LecturerDto implements Serializable {
     @Min(0)
     @Max(5)
     private int currentRating;
-    @Positive
     private int ratingsReceived;
     private Boolean subscribed;
     @DecimalMin(value = "0.0", inclusive = false, message = "Pay rate must be greater than 0")
@@ -47,11 +45,10 @@ public class LecturerDto implements Serializable {
     private Boolean isAssigned;
     @Length(max = 255, message = "Language must not exceed 255 characters")
     private String language;
-    @Positive
     private int lecturingExperience;
     @Length(max = 255, message = "Field of work must not exceed 255 characters")
     private String fieldOfWork;
-    @Length(max = 255, message = "Time preference must not exceed 255 characters")
+    @Pattern(regexp = "^(WEEKEND|WEEKDAY|FLEXIBLE)$", message = "Time preference must be 'WEEKEND', 'WEEKDAY' or 'FLEXIBLE'")
     private String timePreference;
     private String picture;
     private List<SubjectDto> subjects;

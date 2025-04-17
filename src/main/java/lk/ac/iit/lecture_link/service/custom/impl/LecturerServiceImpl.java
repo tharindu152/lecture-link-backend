@@ -261,4 +261,12 @@ public class LecturerServiceImpl implements LecturerService {
         lecturerRepository.save(lecturer);
     }
 
+    @Override
+    public void updateLecturerSubscription(Long lecturerId, boolean subscribed) {
+        Lecturer lecturer = lecturerRepository.findById(lecturerId)
+                .orElseThrow(() -> new AppException(404, "Lecturer not found"));
+        lecturer.setSubscribed(subscribed);
+        lecturerRepository.save(lecturer);
+    }
+
 }

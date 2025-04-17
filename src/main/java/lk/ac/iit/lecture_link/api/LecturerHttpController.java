@@ -124,4 +124,11 @@ public class LecturerHttpController {
                 .collect(Collectors.toList());
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{lecturer-id}/subscribe")
+    public void updateLecturerSubscription(@PathVariable("lecturer-id") Long lecturerId,
+                                           @RequestParam("subscribed") boolean subscribed) {
+        lecturerService.updateLecturerSubscription(lecturerId, subscribed);
+    }
+
 }
