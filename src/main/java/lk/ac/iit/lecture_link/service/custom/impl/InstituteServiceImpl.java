@@ -13,6 +13,7 @@ import lk.ac.iit.lecture_link.exception.AppException;
 import lk.ac.iit.lecture_link.repository.InstituteRepository;
 import lk.ac.iit.lecture_link.repository.LecturerRepository;
 import lk.ac.iit.lecture_link.repository.LogoRepository;
+import lk.ac.iit.lecture_link.repository.SubjectRepository;
 import lk.ac.iit.lecture_link.service.custom.InstituteService;
 import lk.ac.iit.lecture_link.service.util.Transformer;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +35,13 @@ public class InstituteServiceImpl implements InstituteService {
     private final InstituteRepository instituteRepository;
     private final LogoRepository logoRepository;
     private final LecturerRepository lecturerRepository;
+    private final SubjectRepository subjectRepository;
     private final Transformer transformer;
     private final Bucket bucket;
 
     private static final String INSTITUTE_NOT_FOUND_MSG = "No institute associated with the id";
     private static final String LECTURER_NOT_FOUND_MSG = "No lecturer associated with the id";
-
+    private static final String SUBJECT_NOT_FOUND_MSG = "No subject associated with the id";
 
     @Override
     public InstituteDto saveInstitute(InstituteReqDto instituteReqDto) {
@@ -176,8 +178,19 @@ public class InstituteServiceImpl implements InstituteService {
         Optional<Lecturer> optionalLecturer = lecturerRepository.findById(lecturerId);
         if (optionalLecturer.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
 
-        Set<Institute> institutes = instituteRepository.findInstitutesByLecturerId(lecturerId);
-        return institutes.stream().map(transformer::toInstituteDto).collect(Collectors.toSet());
+        Set<Institute> instituteList = instituteRepository.findInstitutesByLecturerId(lecturerId);
+        try {
+            return instituteList.stream().map(l -> {
+                InstituteDto instituteDto = transformer.toInstituteDto(l);
+                if (Objects.nonNull(l.getLogo())) {
+                    instituteDto.setLogo(bucket.get(l.getLogo().getLogoPath())
+                            .signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
+                }
+                return instituteDto;
+            }).collect(Collectors.toSet());
+        } catch (Exception e) {
+            throw new AppException(500, "Failed to retrieve the image", e);
+        }
     }
 
     @Override
@@ -232,5 +245,20 @@ public class InstituteServiceImpl implements InstituteService {
 
         institute.setStatus(Status.INACTIVE.getStatus());
         instituteRepository.save(institute);
+    }
+
+    @Override
+    public void updateInstituteSubscription(Long instituteId, boolean subscribed) {
+        Institute institute = instituteRepository.findById(instituteId)
+                .orElseThrow(() -> new AppException(404, "Institute not found"));
+        institute.setSubscribed(subscribed);
+        instituteRepository.save(institute);
+    }
+
+    @Override
+    public String getInstituteEmailBySubjectId(Long subjectId) {
+        subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new AppException(404, SUBJECT_NOT_FOUND_MSG));
+        return instituteRepository.findInstituteEmailBySubjectId(subjectId);
     }
 }

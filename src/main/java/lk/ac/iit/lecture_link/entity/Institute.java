@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -30,7 +29,7 @@ public class Institute implements Serializable {
   private String email;
   @Column(nullable = false, length = 500)
   private String district;
-  @Column(nullable = false, length = 1500)
+  @Column(length = 1500)
   private String mapsLocation;
   @Column(length = 15)
   private String telephone;
@@ -41,7 +40,6 @@ public class Institute implements Serializable {
   @Max(5)
   private Integer currentRating;
   @Column()
-  @Positive
   private Integer ratingsReceived;
   @Column()
   private boolean subscribed;

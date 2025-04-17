@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class InstituteHttpController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{institute-id}", consumes = "multipart/form-data")
     public void updateInstituteDetailsViaMultipart(@PathVariable("institute-id") Long instituteId,
-                                                  @ModelAttribute @Validated InstituteReqDto instituteReqDto) {
+                                                   @ModelAttribute @Validated InstituteReqDto instituteReqDto) {
         instituteReqDto.setId(instituteId);
         instituteService.updateInstituteDetails(instituteReqDto);
     }
@@ -36,7 +37,7 @@ public class InstituteHttpController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{institute-id}", consumes = "application/json")
     public void updateInstituteDetailsViaJson(@PathVariable("institute-id") Long instituteId,
-                                             @RequestBody @Validated InstituteDto instituteDto) {
+                                              @RequestBody @Validated InstituteDto instituteDto) {
         instituteDto.setId(instituteId);
         instituteService.updateInstituteDetails(instituteDto);
     }
@@ -98,6 +99,23 @@ public class InstituteHttpController {
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{institute-id}/subscribe")
+    public void updateInstituteSubscription(@PathVariable("institute-id") Long instituteId,
+                                            @RequestParam("subscribed") boolean subscribed) {
+        instituteService.updateInstituteSubscription(instituteId, subscribed);
+    }
+
+    @GetMapping("/email-by-subject/{subjectId}")
+    public ResponseEntity<String> getInstituteEmailBySubjectId(@PathVariable Long subjectId) {
+        String email = instituteService.getInstituteEmailBySubjectId(subjectId);
+        if (email != null) {
+            return ResponseEntity.ok(email);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

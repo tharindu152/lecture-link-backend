@@ -27,7 +27,6 @@ public class InstituteReqDto implements Serializable {
   @NotBlank(message = "District can't be empty")
   @Length(max = 500, message = "District must not exceed 500 characters")
   private String district;
-  @NotBlank(message = "Maps location can't be empty")
   private String mapsLocation;
   @Pattern(regexp = "^(?:\\+94|0)?(?:7[01245678]\\d{7}|1\\d{8})$", message = "Invalid telephone number")
   private String telephone;
@@ -36,7 +35,6 @@ public class InstituteReqDto implements Serializable {
   @Min(0)
   @Max(5)
   private int currentRating;
-  @Positive
   private int ratingsReceived;
   private Boolean subscribed;
   @Image

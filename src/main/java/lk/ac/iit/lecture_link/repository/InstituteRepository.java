@@ -30,4 +30,10 @@ public interface InstituteRepository extends JpaRepository<Institute, Long> {
 
     Optional<Institute> findInstituteByEmail(String email);
 
+    @Query("SELECT DISTINCT i.email FROM Subject s " +
+            "JOIN s.programs p " +
+            "JOIN p.institute i " +
+            "WHERE s.id = :subjectId")
+    String findInstituteEmailBySubjectId(@Param("subjectId") Long subjectId);
+
 }

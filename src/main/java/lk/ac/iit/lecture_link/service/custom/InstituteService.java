@@ -34,4 +34,8 @@ public interface InstituteService extends SuperService {
     void updateInstituteRating(Long instituteId, int newRating);
 
     void deactivateInstitute(Long instituteId);
+
+    void updateInstituteSubscription(Long instituteId, boolean subscribed);
+
+    String getInstituteEmailBySubjectId(Long subjectId);
 }

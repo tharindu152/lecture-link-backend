@@ -35,7 +35,6 @@ public class InstituteDto implements Serializable {
   @Min(0)
   @Max(5)
   private int currentRating;
-  @Positive
   private int ratingsReceived;
   private Boolean subscribed;
   private String logo;
