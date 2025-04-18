@@ -17,6 +17,8 @@ import lk.ac.iit.lecture_link.repository.SubjectRepository;
 import lk.ac.iit.lecture_link.service.custom.InstituteService;
 import lk.ac.iit.lecture_link.service.util.Transformer;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class InstituteServiceImpl implements InstituteService {
 
+    private static final Logger log = LoggerFactory.getLogger(InstituteServiceImpl.class);
+
     private final InstituteRepository instituteRepository;
     private final LogoRepository logoRepository;
     private final LecturerRepository lecturerRepository;
@@ -42,14 +46,17 @@ public class InstituteServiceImpl implements InstituteService {
     private static final String INSTITUTE_NOT_FOUND_MSG = "No institute associated with the id";
     private static final String LECTURER_NOT_FOUND_MSG = "No lecturer associated with the id";
     private static final String SUBJECT_NOT_FOUND_MSG = "No subject associated with the id";
+    private static final String FAILED_TO_RETRIEVE_IMAGE = "Failed to retrieve the image";
 
     @Override
     public InstituteDto saveInstitute(InstituteReqDto instituteReqDto) {
+        log.info("Saving new institute with name: {}", instituteReqDto.getName());
         Institute institute = transformer.fromInstituteReqDto(instituteReqDto);
 
         String signUrl = null;
         try {
             if (Objects.nonNull(instituteReqDto.getLogo()) && instituteReqDto.getLogo().getBytes().length > 0) {
+                log.info("Uploading logo for institute: {}", instituteReqDto.getName());
                 Logo logo = new Logo("institutes/" + UUID.randomUUID());
                 institute.setLogo(logo);
                 Blob blobRef = null;
@@ -57,6 +64,7 @@ public class InstituteServiceImpl implements InstituteService {
                         instituteReqDto.getLogo().getContentType());
                 signUrl = (blobRef.signUrl(1, TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
             } else {
+                log.warn("No logo provided for institute: {}", instituteReqDto.getName());
                 institute.setLogo(null);
             }
             institute = instituteRepository.save(institute);
@@ -72,6 +80,7 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     public void updateInstituteDetails(InstituteReqDto instituteReqDto) {
+        log.info("Updating details for institute with ID: {}", instituteReqDto.getId());
         Institute currentInstitute = instituteRepository.findById(instituteReqDto.getId())
                 .orElseThrow(() -> new AppException(404, INSTITUTE_NOT_FOUND_MSG));
 
@@ -81,6 +90,7 @@ public class InstituteServiceImpl implements InstituteService {
 
         try {
             if (Objects.nonNull(instituteReqDto.getLogo()) && instituteReqDto.getLogo().getBytes().length > 0) {
+                log.info("Updating logo for institute with ID: {}", instituteReqDto.getId());
                 Logo logo = new Logo("institutes/" + UUID.randomUUID());
                 newInstitute.setLogo(logo);
                 bucket.create(newInstitute.getLogo().getLogoPath(), instituteReqDto.getLogo().getInputStream(),
@@ -93,6 +103,7 @@ public class InstituteServiceImpl implements InstituteService {
                     logoRepository.deleteById(currentInstitute.getLogo().getId());
                 }
             }else if(Objects.nonNull(currentInstitute.getLogo())){
+                log.warn("Removing existing logo for institute with ID: {}", instituteReqDto.getId());
                 blobRef = bucket.get(currentInstitute.getLogo().getLogoPath());
                 if(blobRef != null) {
                     blobRef.delete();
@@ -101,6 +112,7 @@ public class InstituteServiceImpl implements InstituteService {
                 newInstitute.setLogo(null);
             }
             instituteRepository.save(newInstitute);
+            log.info("Institute details updated successfully for ID: {}", instituteReqDto.getId());
         } catch (IOException e) {
             throw new AppException(500, "Failed to update the image", e);
         }
@@ -108,6 +120,7 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     public void updateInstituteDetails(InstituteDto instituteDto) {
+        log.info("Updating institute with ID: {}", instituteDto.getId());
         instituteRepository.findById(instituteDto.getId())
                 .orElseThrow(() -> new AppException(404, INSTITUTE_NOT_FOUND_MSG));
 
@@ -118,6 +131,7 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     public void deleteInstitute(Long instituteId) {
+        log.info("Deleting institute with ID: {}", instituteId);
         Institute currentInstitute = instituteRepository.findById(instituteId)
                 .orElseThrow(() -> new AppException(404, INSTITUTE_NOT_FOUND_MSG));
 
@@ -125,6 +139,7 @@ public class InstituteServiceImpl implements InstituteService {
 
         try {
             if (Objects.nonNull(currentInstitute.getLogo())) {
+                log.info("Deleting logo for institute with ID: {}", instituteId);
                 blobRef = bucket.get(currentInstitute.getLogo().getLogoPath());
                 logoRepository.delete(currentInstitute.getLogo());
                 blobRef.delete();
@@ -132,24 +147,28 @@ public class InstituteServiceImpl implements InstituteService {
         } catch (Exception e) {
             throw new AppException(500, "Failed to delete the image", e);
         }
-
         instituteRepository.deleteById(instituteId);
+        log.info("Institute deleted successfully with ID: {}", instituteId);
     }
 
     @Override
     public InstituteDto getInstitute(Long instituteId) {
-
+        log.info("Fetching institute with ID: {}", instituteId);
         Optional<Institute> optInstitute = instituteRepository.findById(instituteId);
-        if (optInstitute.isEmpty()) throw new AppException(404, INSTITUTE_NOT_FOUND_MSG);
+        if (optInstitute.isEmpty()) {
+            log.error("Institute not found with ID: {}", instituteId);
+            throw new AppException(404, INSTITUTE_NOT_FOUND_MSG);
+        }
         InstituteDto instituteDto = transformer.toInstituteDto(optInstitute.get());
 
         try {
             if (Objects.nonNull(optInstitute.get().getLogo())) {
+                log.info("Fetching logo for institute with ID: {}", instituteId);
                 instituteDto.setLogo(bucket.get(optInstitute.get().getLogo().getLogoPath()).signUrl(1,
                         TimeUnit.DAYS, Storage.SignUrlOption.withV4Signature()).toString());
             }
         } catch (Exception e) {
-            throw new AppException(500, "Failed to retrieve the image", e);
+            throw new AppException(500, FAILED_TO_RETRIEVE_IMAGE, e);
         }
 
         return instituteDto;
@@ -157,6 +176,7 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     public List<InstituteDto> getAllInstitutes() {
+        log.info("Fetching all institutes");
         List<Institute> instituteList = instituteRepository.findAll();
 
         try {
@@ -169,7 +189,7 @@ public class InstituteServiceImpl implements InstituteService {
                 return instituteDto;
             }).collect(Collectors.toList());
         } catch (Exception e) {
-            throw new AppException(500, "Failed to retrieve the image", e);
+            throw new AppException(500, FAILED_TO_RETRIEVE_IMAGE, e);
         }
     }
 
@@ -189,7 +209,7 @@ public class InstituteServiceImpl implements InstituteService {
                 return instituteDto;
             }).collect(Collectors.toSet());
         } catch (Exception e) {
-            throw new AppException(500, "Failed to retrieve the image", e);
+            throw new AppException(500, FAILED_TO_RETRIEVE_IMAGE, e);
         }
     }
 
@@ -206,7 +226,7 @@ public class InstituteServiceImpl implements InstituteService {
                 return instituteDto;
             });
         } catch (Exception e) {
-            throw new AppException(500, "Failed to retrieve the image", e);
+            throw new AppException(500, FAILED_TO_RETRIEVE_IMAGE, e);
         }
     }
 
@@ -249,10 +269,12 @@ public class InstituteServiceImpl implements InstituteService {
 
     @Override
     public void updateInstituteSubscription(Long instituteId, boolean subscribed) {
+        log.info("Updating subscription status for institute with ID: {}", instituteId);
         Institute institute = instituteRepository.findById(instituteId)
                 .orElseThrow(() -> new AppException(404, "Institute not found"));
         institute.setSubscribed(subscribed);
         instituteRepository.save(institute);
+        log.info("Subscription status updated successfully for institute with ID: {}", instituteId);
     }
 
     @Override
