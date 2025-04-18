@@ -20,7 +20,7 @@ public class Logo implements Serializable {
     private String logoPath;
 
     @OneToOne
-    @JoinColumn(name = "institute_id", referencedColumnName = "id", unique = true)
+    @JoinColumn(name = "institute_id", referencedColumnName = "id")
     private Institute institute;
 
     public Logo(String picturePath) {
