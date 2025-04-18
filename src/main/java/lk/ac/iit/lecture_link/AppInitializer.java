@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
@@ -29,6 +30,11 @@ public class AppInitializer {
     @Bean
     public ModelMapper mapper(){
         return new ModelMapper();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
     @Bean

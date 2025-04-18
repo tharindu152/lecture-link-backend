@@ -1,6 +1,8 @@
 package lk.ac.iit.lecture_link.api;
 
+import lk.ac.iit.lecture_link.dto.AiMatchResponseDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
+import lk.ac.iit.lecture_link.dto.request.AiMatchRequestDto;
 import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
 import lk.ac.iit.lecture_link.service.custom.LecturerService;
 import lombok.RequiredArgsConstructor;
@@ -129,6 +131,12 @@ public class LecturerHttpController {
     public void updateLecturerSubscription(@PathVariable("lecturer-id") Long lecturerId,
                                            @RequestParam("subscribed") boolean subscribed) {
         lecturerService.updateLecturerSubscription(lecturerId, subscribed);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/ai-match", consumes = "application/json", produces = "application/json")
+    public AiMatchResponseDto getPrediction(@RequestBody AiMatchRequestDto requestDto) {
+        return lecturerService.getPrediction(requestDto);
     }
 
 }
