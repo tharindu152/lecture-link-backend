@@ -48,6 +48,8 @@ public interface LecturerService extends SuperService {
 
     void updateLecturerSubscription(Long lecturerId, boolean subscribed);
 
+    void updateLecturerIsAssigned(Long lecturerId, boolean isAssigned);
+
     AiMatchResponseDto getPrediction(AiMatchRequestDto requestDto);
 
 }

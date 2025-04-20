@@ -339,6 +339,19 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
+    public void updateLecturerIsAssigned(Long lecturerId, boolean isAssigned) {
+        log.info("Updating isAssigned status for lecturer with ID: {}", lecturerId);
+        Lecturer lecturer = lecturerRepository.findById(lecturerId)
+                .orElseThrow(() -> {
+                    log.error("Lecturer not found with ID: {}", lecturerId);
+                    return new AppException(404, "Lecturer not found");
+                });
+        lecturer.setIsAssigned(isAssigned);
+        lecturerRepository.save(lecturer);
+        log.info("Assignment status updated successfully for lecturer with ID: {}", lecturerId);
+    }
+
+    @Override
     public AiMatchResponseDto getPrediction(AiMatchRequestDto requestDto) {
         try {
             log.info("Sending ai-match request to external API: {}", smartMatchUrl);

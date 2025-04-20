@@ -133,6 +133,13 @@ public class LecturerHttpController {
         lecturerService.updateLecturerSubscription(lecturerId, subscribed);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{lecturer-id}/assign")
+    public void updateLecturerIsAssigned(@PathVariable("lecturer-id") Long lecturerId,
+                                           @RequestParam("assign") boolean isAssigned) {
+        lecturerService.updateLecturerIsAssigned(lecturerId, isAssigned);
+    }
+
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/ai-match", consumes = "application/json", produces = "application/json")
     public AiMatchResponseDto getPrediction(@RequestBody AiMatchRequestDto requestDto) {
