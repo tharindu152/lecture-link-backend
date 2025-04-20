@@ -13,10 +13,10 @@ import java.util.Set;
 public interface InstituteRepository extends JpaRepository<Institute, Long> {
 
     @Query("SELECT i FROM Institute i " +
-            "WHERE i.district LIKE %:district% " +
+            "WHERE i.division LIKE %:division% " +
             "AND i.status = :status ")
     Page<Institute> findFilteredInstitutes(
-            @Param("district") String district,
+            @Param("division") String division,
             @Param("status") String status,
             Pageable pageable);
 

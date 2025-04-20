@@ -95,17 +95,17 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Page<FilteredSubjectDto> getFilteredSubjects(
-            String district, String programLevel, Integer credits,
+            String division, String programLevel, Integer credits,
             BigDecimal paymentLower, BigDecimal paymentUpper,
             Integer durationLower, Integer durationUpper,
             Integer studentLower, Integer studentUpper,
             String globalSearch, Pageable pageable) {
 
-        log.info("Fetching filtered subjects with criteria: district={}, programLevel={}, credits={}, paymentLower={}, paymentUpper={}, durationLower={}, durationUpper={}, studentLower={}, studentUpper={}, globalSearch={}",
-                district, programLevel, credits, paymentLower, paymentUpper, durationLower, durationUpper, studentLower, studentUpper, globalSearch);
+        log.info("Fetching filtered subjects with criteria: division={}, programLevel={}, credits={}, paymentLower={}, paymentUpper={}, durationLower={}, durationUpper={}, studentLower={}, studentUpper={}, globalSearch={}",
+                division, programLevel, credits, paymentLower, paymentUpper, durationLower, durationUpper, studentLower, studentUpper, globalSearch);
 
         Page<Object[]> resultPage = subjectRepository.findFilteredSubjects(
-                district, programLevel, credits,
+                division, programLevel, credits,
                 paymentLower, paymentUpper,
                 durationLower, durationUpper,
                 studentLower, studentUpper,

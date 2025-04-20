@@ -240,7 +240,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public Page<LecturerDto> getFilteredLecturers(
-            String district,
+            String division,
             BigDecimal payRateLower,
             BigDecimal payRateUpper,
             String qualification,
@@ -248,11 +248,11 @@ public class LecturerServiceImpl implements LecturerService {
             String language,
             String globalSearch,
             Pageable pageable) {
-        log.info("Fetching filtered lecturers with criteria: district={}, payRateLower={}, payRateUpper={}, qualification={}, isAssigned={}, language={}, globalSearch={}",
-                district, payRateLower, payRateUpper, qualification, isAssigned, language, globalSearch);
+        log.info("Fetching filtered lecturers with criteria: division={}, payRateLower={}, payRateUpper={}, qualification={}, isAssigned={}, language={}, globalSearch={}",
+                division, payRateLower, payRateUpper, qualification, isAssigned, language, globalSearch);
 
         Page<Lecturer> lecturerPage = lecturerRepository.findFilteredLecturers(
-                district, payRateLower, payRateUpper, qualification, isAssigned, language, globalSearch, pageable);
+                division, payRateLower, payRateUpper, qualification, isAssigned, language, globalSearch, pageable);
 
         try {
             return lecturerPage.map(lecturer -> {

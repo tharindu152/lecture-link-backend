@@ -13,11 +13,11 @@ import java.util.List;
 
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
-    @Query(value = "SELECT DISTINCT s.id, s.name, p.level, s.noOfCredits, p.studentCount, p.durationInDays, i.district, p.hourlyPayRate " +
+    @Query(value = "SELECT DISTINCT s.id, s.name, p.level, s.noOfCredits, p.studentCount, p.durationInDays, i.division, p.hourlyPayRate " +
             "FROM Subject s " +
             "JOIN s.programs p " +
             "JOIN p.institute i " +
-            "WHERE (:district IS NULL OR i.district LIKE CONCAT('%', :district, '%')) " +
+            "WHERE (:division IS NULL OR i.division LIKE CONCAT('%', :division, '%')) " +
             "  AND (:programLevel IS NULL OR p.level LIKE CONCAT('%', :programLevel, '%')) " +
             "  AND (:credits IS NULL OR s.noOfCredits = :credits) " +
             "  AND (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.hourlyPayRate > :paymentLower AND p.hourlyPayRate < :paymentUpper)) " +
@@ -28,7 +28,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
                     "FROM Subject s " +
                     "JOIN s.programs p " +
                     "JOIN p.institute i " +
-                    "WHERE (:district IS NULL OR i.district LIKE CONCAT('%', :district, '%')) " +
+                    "WHERE (:division IS NULL OR i.division LIKE CONCAT('%', :division, '%')) " +
                     "  AND (:programLevel IS NULL OR p.level LIKE CONCAT('%', :programLevel, '%')) " +
                     "  AND (:credits IS NULL OR s.noOfCredits = :credits) " +
                     "  AND (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.hourlyPayRate > :paymentLower AND p.hourlyPayRate < :paymentUpper)) " +
@@ -36,7 +36,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
                     "  AND (:studentUpper IS NULL OR :studentLower IS NULL OR (p.studentCount > :studentLower AND p.studentCount < :studentUpper)) " +
                     "  AND (:globalSearch IS NULL OR s.name LIKE CONCAT('%', :globalSearch, '%') OR s.description LIKE CONCAT('%', :globalSearch, '%'))")
     Page<Object[]> findFilteredSubjects(
-            @Param("district") String district,
+            @Param("division") String division,
             @Param("programLevel") String programLevel,
             @Param("credits") Integer credits,
             @Param("paymentLower") BigDecimal paymentLower,

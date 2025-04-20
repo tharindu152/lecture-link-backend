@@ -86,7 +86,7 @@ public class LecturerHttpController {
 
     @GetMapping(value = "/filter", produces = "application/json")
     public Page<LecturerDto> getFilteredLecturers(
-            @RequestParam(value = "district", required = false) String district,
+            @RequestParam(value = "division", required = false) String division,
             @RequestParam(value = "payRateLower", required = false) BigDecimal payRateLower,
             @RequestParam(value = "payRateUpper", required = false) BigDecimal payRateUpper,
             @RequestParam(value = "qualification", required = false) String qualification,
@@ -102,7 +102,7 @@ public class LecturerHttpController {
         Pageable pageable = PageRequest.of(page, size, sortObj);
 
         return lecturerService.getFilteredLecturers(
-                district,
+                division,
                 payRateLower,
                 payRateUpper,
                 qualification,

@@ -25,7 +25,7 @@ public interface InstituteService extends SuperService {
 
     Set<InstituteDto> getInstitutesForLecturerId(Long lecturerId);
 
-    Page<InstituteDto> getFilteredInstitutes(String district, String status, Pageable pageable);
+    Page<InstituteDto> getFilteredInstitutes(String division, String status, Pageable pageable);
 
     InstituteDto getInstituteByEmailAndPassword(String email, String password);
 

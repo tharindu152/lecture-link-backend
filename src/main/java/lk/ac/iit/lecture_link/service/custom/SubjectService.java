@@ -22,7 +22,7 @@ public interface SubjectService extends SuperService {
     List<SubjectDto> getAllSubjects();
 
     Page<FilteredSubjectDto> getFilteredSubjects(
-            String district, String programLevel, Integer credits,
+            String division, String programLevel, Integer credits,
             BigDecimal paymentLower, BigDecimal paymentUpper,
             Integer durationLower, Integer durationUpper,
             Integer studentLower, Integer studentUpper,

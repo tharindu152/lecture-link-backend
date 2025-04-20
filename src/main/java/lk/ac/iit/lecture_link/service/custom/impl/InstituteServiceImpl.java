@@ -214,8 +214,8 @@ public class InstituteServiceImpl implements InstituteService {
     }
 
     @Override
-    public Page<InstituteDto> getFilteredInstitutes(String district, String status, Pageable pageable) {
-        Page<Institute> institutePage = instituteRepository.findFilteredInstitutes(district, status, pageable);
+    public Page<InstituteDto> getFilteredInstitutes(String division, String status, Pageable pageable) {
+        Page<Institute> institutePage = instituteRepository.findFilteredInstitutes(division, status, pageable);
         try {
             return institutePage.map(institute -> {
                 InstituteDto instituteDto = transformer.toInstituteDto(institute);

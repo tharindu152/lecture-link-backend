@@ -18,9 +18,9 @@ public class LecturerDto implements Serializable {
     @NotBlank(message = "Lecturer name can't be empty")
     @Length(max = 255, message = "Lecturer name must not exceed 255 characters")
     private String name;
-    @NotBlank(message = "District can't be empty")
-    @Length(max = 500, message = "District must not exceed 500 characters")
-    private String district;
+    @NotBlank(message = "Division can't be empty")
+    @Length(max = 500, message = "Division must not exceed 500 characters")
+    private String division;
     private String mapsLocation;
     @NotBlank(message = "Email can't be empty")
     @Email(message = "Invalid email address")
@@ -28,7 +28,7 @@ public class LecturerDto implements Serializable {
     @NotBlank(message = "Password can't be empty")
     @Length(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
     private String password;
-    @Pattern(regexp = "^(?:\\+94|0)?(?:7[01245678]\\d{7}|1\\d{8})$", message = "Invalid contact number")
+    @Pattern(regexp = "^(?:\\+94|0)?(?:7[01245678]\\d{7}|1\\d{8}|)$", message = "Invalid contact number")
     private String contactNo;
     @Min(0)
     @Max(5)

@@ -28,9 +28,9 @@ public class FilteredSubjectDto implements Serializable {
   private int durationInDays;
   @Positive(message = "Student count must be positive")
   private int studentCount;
-  @NotBlank(message = "District can't be empty")
-  @Length(max = 500, message = "District must not exceed 500 characters")
-  private String district;
+  @NotBlank(message = "Division can't be empty")
+  @Length(max = 500, message = "Division must not exceed 500 characters")
+  private String division;
   @NotNull(message = "Payment can't be null")
   @DecimalMin(value = "0.0", inclusive = false, message = "Payment must be greater than 0")
   private BigDecimal payment;

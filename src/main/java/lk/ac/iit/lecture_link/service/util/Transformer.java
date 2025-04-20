@@ -74,7 +74,7 @@ public class Transformer {
         dto.setNoOfCredits((Integer) result[3]);
         dto.setStudentCount((Integer) result[4]);
         dto.setDurationInDays((Integer) result[5]);
-        dto.setDistrict((String) result[6]);
+        dto.setDivision((String) result[6]);
         dto.setPayment((BigDecimal) result[7]);
         return dto;
     }

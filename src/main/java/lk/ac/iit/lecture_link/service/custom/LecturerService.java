@@ -29,7 +29,7 @@ public interface LecturerService extends SuperService {
     Set<LecturerDto> getLecturersForInstituteId(Long instituteId);
 
     Page<LecturerDto> getFilteredLecturers(
-            String district,
+            String division,
             BigDecimal payRateLower,
             BigDecimal payRateUpper,
             String qualification,

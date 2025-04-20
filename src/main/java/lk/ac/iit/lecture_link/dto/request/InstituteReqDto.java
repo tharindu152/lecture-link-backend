@@ -24,11 +24,11 @@ public class InstituteReqDto implements Serializable {
   @NotBlank(message = "Email can't be empty")
   @Email(message = "Invalid email address")
   private String email;
-  @NotBlank(message = "District can't be empty")
-  @Length(max = 500, message = "District must not exceed 500 characters")
-  private String district;
+  @NotBlank(message = "Division can't be empty")
+  @Length(max = 500, message = "Division must not exceed 500 characters")
+  private String division;
   private String mapsLocation;
-  @Pattern(regexp = "^(?:\\+94|0)?(?:7[01245678]\\d{7}|1\\d{8})$", message = "Invalid telephone number")
+  @Pattern(regexp = "^(?:\\+94|0)?(?:7[01245678]\\d{7}|1\\d{8}|)$", message = "Invalid telephone number")
   private String telephone;
   @Length(max = 1000, message = "Description must not exceed 1000 characters")
   private String description;

@@ -78,14 +78,14 @@ public class InstituteHttpController {
 
     @GetMapping(value = "/filter", produces = "application/json")
     public Page<InstituteDto> getFilteredInstitutes(
-            @RequestParam(value = "district", required = false) String district,
+            @RequestParam(value = "division", required = false) String division,
             @RequestParam(value = "status", required = false) String status,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "id,asc") String sort) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
-        return instituteService.getFilteredInstitutes(district, status, pageable);
+        return instituteService.getFilteredInstitutes(division, status, pageable);
     }
 
     private List<Sort.Order> parseSort(String sort) {

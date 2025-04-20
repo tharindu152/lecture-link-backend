@@ -57,7 +57,7 @@ public class SubjectHttpController {
 
     @GetMapping(value = "/filter", produces = "application/json")
     public Page<FilteredSubjectDto> getFilteredSubjects(
-            @RequestParam(value = "district", required = false) String district,
+            @RequestParam(value = "division", required = false) String division,
             @RequestParam(value = "programLevel", required = false) String programLevel,
             @RequestParam(value = "credits", required = false) Integer credits,
             @RequestParam(value = "paymentLower", required = false) BigDecimal paymentLower,
@@ -74,7 +74,7 @@ public class SubjectHttpController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(parseSort(sort)));
 
         return subjectService.getFilteredSubjects(
-                district, programLevel, credits,
+                division, programLevel, credits,
                 paymentLower, paymentUpper,
                 durationLower, durationUpper,
                 studentLower, studentUpper,

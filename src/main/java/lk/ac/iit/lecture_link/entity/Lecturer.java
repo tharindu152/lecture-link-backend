@@ -25,7 +25,7 @@ public class Lecturer implements Serializable {
     @Column(nullable = false, length = 255)
     private String name;
     @Column(nullable = false, length = 500)
-    private String district;
+    private String division;
     @Column(length = 1500)
     private String mapsLocation;
     @Column(nullable = false, length = 255)
