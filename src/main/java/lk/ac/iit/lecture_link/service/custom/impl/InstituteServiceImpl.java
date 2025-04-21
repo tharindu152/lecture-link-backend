@@ -233,7 +233,12 @@ public class InstituteServiceImpl implements InstituteService {
     @Override
     public InstituteDto getInstituteByEmailAndPassword(String email, String password){
         Optional<Institute> optionalInstitute = instituteRepository.getInstituteByEmailAndPassword(email, password);
-        if (optionalInstitute.isEmpty()) throw new AppException(404, LECTURER_NOT_FOUND_MSG);
+        if (optionalInstitute.isEmpty()) {
+            throw new AppException(404, LECTURER_NOT_FOUND_MSG);
+        } else if(optionalInstitute.get().getStatus().equals(Status.INACTIVE.getStatus())) {
+            log.error("Institute is inactive for email: {}", email);
+            throw new AppException(403, "Institute is inactive");
+        }
 
         return transformer.toInstituteDto(optionalInstitute.get());
     }

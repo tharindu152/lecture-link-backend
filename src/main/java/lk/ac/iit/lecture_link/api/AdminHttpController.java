@@ -2,12 +2,12 @@ package lk.ac.iit.lecture_link.api;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import lk.ac.iit.lecture_link.enums.Role;
 import lk.ac.iit.lecture_link.dto.AuthDto;
 import lk.ac.iit.lecture_link.dto.InstituteDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
 import lk.ac.iit.lecture_link.dto.request.InstituteReqDto;
 import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
+import lk.ac.iit.lecture_link.enums.Role;
 import lk.ac.iit.lecture_link.service.custom.InstituteService;
 import lk.ac.iit.lecture_link.service.custom.LecturerService;
 import lombok.RequiredArgsConstructor;

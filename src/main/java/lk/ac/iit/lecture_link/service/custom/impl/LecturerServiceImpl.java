@@ -277,6 +277,9 @@ public class LecturerServiceImpl implements LecturerService {
         if (optionalLecturer.isEmpty()) {
             log.error(LECTURER_NOT_FOUND_MSG + " for email: {}", email);
             throw new AppException(404, LECTURER_NOT_FOUND_MSG);
+        } else if(optionalLecturer.get().getStatus().equals(Status.INACTIVE.getStatus())) {
+            log.error("Lecturer is inactive for email: {}", email);
+            throw new AppException(403, "Lecturer is inactive");
         }
 
         return transformer.toLecturerDto(optionalLecturer.get());
