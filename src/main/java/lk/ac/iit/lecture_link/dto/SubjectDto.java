@@ -24,6 +24,6 @@ public class SubjectDto implements Serializable {
   @Length(max = 1000, message = "Description must not exceed 1000 characters")
   private String description;
   @NotNull(message = "isAssigned can not be null")
-  private boolean isAssigned;
+  private Boolean isAssigned;
   private Long lecturerId;
 }
