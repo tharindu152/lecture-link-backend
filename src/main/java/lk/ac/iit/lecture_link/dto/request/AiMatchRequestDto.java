@@ -13,16 +13,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({
-        "program",
-        "hourly_pay",
-        "level",
-        "time_pref",
-        "student_count",
-        "subject",
-        "credits",
-        "institute_rating"
-})
+@JsonPropertyOrder({"program", "hourly_pay", "level", "time_pref", "student_count", "subject", "credits", "institute_rating", "duration", "division", "status", "language"})
 public class AiMatchRequestDto {
     @Length(max = 255, message = "Program name must not exceed 255 characters")
     private String program;
@@ -51,4 +42,13 @@ public class AiMatchRequestDto {
     @Max(5)
     @JsonProperty("institute_rating")
     private double instituteRating;
+    @Positive(message = "Duration in days must be positive")
+    @JsonProperty("duration")
+    private int durationInDays;
+    @Length(max = 500, message = "Division must not exceed 500 characters")
+    private String division;
+    @Pattern(regexp = "^(ACTIVE|INACTIVE)$", message = "Status must be either 'ACTIVE' or 'INACTIVE'")
+    private String status;
+    @Pattern(regexp = "^(ENGLISH|SINHALA|TAMIL)$", message = "Language must be 'ENGLISH', 'SINHALA' or 'TAMIL'")
+    private String language;
 }

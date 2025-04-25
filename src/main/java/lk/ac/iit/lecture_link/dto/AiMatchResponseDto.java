@@ -12,7 +12,7 @@ public class AiMatchResponseDto {
     @JsonProperty("predicted_lecturer_id")
     private long matchedLecturerId;
     @JsonProperty("top_3_recommendations")
-    private Recommendation[] recommendations;
+    private Recommendation[] top3Recommendations;
 
     @Data
     @NoArgsConstructor
