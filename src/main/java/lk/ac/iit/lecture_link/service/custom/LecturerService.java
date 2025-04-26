@@ -1,8 +1,6 @@
 package lk.ac.iit.lecture_link.service.custom;
 
-import lk.ac.iit.lecture_link.dto.AiMatchResponseDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
-import lk.ac.iit.lecture_link.dto.request.AiMatchRequestDto;
 import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
 import lk.ac.iit.lecture_link.service.SuperService;
 import org.springframework.data.domain.Page;
@@ -49,7 +47,5 @@ public interface LecturerService extends SuperService {
     void updateLecturerSubscription(Long lecturerId, boolean subscribed);
 
     void updateLecturerIsAssigned(Long lecturerId, boolean isAssigned);
-
-    AiMatchResponseDto getPrediction(AiMatchRequestDto requestDto);
 
 }

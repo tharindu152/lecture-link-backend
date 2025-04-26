@@ -1,13 +1,10 @@
 package lk.ac.iit.lecture_link.service.custom.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
-import lk.ac.iit.lecture_link.dto.AiMatchResponseDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
 import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
-import lk.ac.iit.lecture_link.dto.request.AiMatchRequestDto;
 import lk.ac.iit.lecture_link.entity.Institute;
 import lk.ac.iit.lecture_link.entity.Lecturer;
 import lk.ac.iit.lecture_link.entity.Picture;
@@ -22,11 +19,9 @@ import lk.ac.iit.lecture_link.service.util.Transformer;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -40,12 +35,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LecturerServiceImpl implements LecturerService {
 
-    @Value("${application.smart.match.api.url}")
-    private String smartMatchUrl;
-
     private static final Logger log = LoggerFactory.getLogger(LecturerServiceImpl.class);
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
 
     private final LecturerRepository lecturerRepository;
     private final PictureRepository pictureRepository;
@@ -354,14 +344,4 @@ public class LecturerServiceImpl implements LecturerService {
         log.info("Assignment status updated successfully for lecturer with ID: {}", lecturerId);
     }
 
-    @Override
-    public AiMatchResponseDto getPrediction(AiMatchRequestDto requestDto) {
-        try {
-            log.info("Sending ai-match request to external API: {}", smartMatchUrl);
-            String response = restTemplate.postForObject(smartMatchUrl, requestDto, String.class);
-            return objectMapper.readValue(response, AiMatchResponseDto.class);
-        } catch (Exception e) {
-            throw new AppException(500, "Failed to get ai-match from external API", e);
-        }
-    }
 }

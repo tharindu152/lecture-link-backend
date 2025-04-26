@@ -4,6 +4,7 @@ import lk.ac.iit.lecture_link.dto.AiMatchResponseDto;
 import lk.ac.iit.lecture_link.dto.LecturerDto;
 import lk.ac.iit.lecture_link.dto.request.AiMatchRequestDto;
 import lk.ac.iit.lecture_link.dto.request.LecturerReqDto;
+import lk.ac.iit.lecture_link.rest.AiMatchRestClient;
 import lk.ac.iit.lecture_link.service.custom.LecturerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class LecturerHttpController {
 
     private final LecturerService lecturerService;
+    private final AiMatchRestClient aiMatchRestClient;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/register", consumes = "multipart/form-data", produces = "application/json")
@@ -143,7 +145,13 @@ public class LecturerHttpController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/ai-match", consumes = "application/json", produces = "application/json")
     public AiMatchResponseDto getPrediction(@RequestBody AiMatchRequestDto requestDto) {
-        return lecturerService.getPrediction(requestDto);
+        return aiMatchRestClient.getPrediction(requestDto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/ai-match/retrain")
+    public void getPrediction() {
+        aiMatchRestClient.retrainAiMatch();
     }
 
 }

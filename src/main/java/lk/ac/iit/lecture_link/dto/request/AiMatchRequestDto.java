@@ -1,11 +1,13 @@
 package lk.ac.iit.lecture_link.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -13,7 +15,8 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"program", "hourly_pay", "level", "time_pref", "student_count", "subject", "credits", "institute_rating", "duration", "division", "status", "language"})
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({"program", "hourly_pay", "level", "time_pref", "student_count", "subject", "credits", "institute_rating", "lecturer_id", "duration", "division", "status", "language"})
 public class AiMatchRequestDto {
     @Length(max = 255, message = "Program name must not exceed 255 characters")
     private String program;
@@ -51,4 +54,7 @@ public class AiMatchRequestDto {
     private String status;
     @Pattern(regexp = "^(ENGLISH|SINHALA|TAMIL)$", message = "Language must be 'ENGLISH', 'SINHALA' or 'TAMIL'")
     private String language;
+    @Nullable
+    @JsonProperty("lecturer_id")
+    private Long lecturerId;
 }
