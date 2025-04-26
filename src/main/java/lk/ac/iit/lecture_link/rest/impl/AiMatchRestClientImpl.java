@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -52,6 +53,7 @@ public class AiMatchRestClientImpl implements AiMatchRestClient {
 
 
     @Override
+    @Scheduled(cron = "0 0 0 * * ?")
     public void retrainAiMatch() {
         log.info("Retrieving data for AI retraining...");
 
