@@ -1,6 +1,6 @@
 package lk.ac.iit.lecture_link.dto.request;
 
-import lk.ac.iit.lecture_link.validation.Image;
+import lk.ac.iit.lecture_link.annotation.Image;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

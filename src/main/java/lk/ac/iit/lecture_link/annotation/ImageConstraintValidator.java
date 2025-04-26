@@ -1,4 +1,4 @@
-package lk.ac.iit.lecture_link.validation;
+package lk.ac.iit.lecture_link.annotation;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,4 +1,4 @@
-package lk.ac.iit.lecture_link.validation;
+package lk.ac.iit.lecture_link.annotation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
