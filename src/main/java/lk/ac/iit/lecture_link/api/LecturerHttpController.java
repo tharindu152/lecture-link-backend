@@ -30,12 +30,6 @@ public class LecturerHttpController {
     private final LecturerService lecturerService;
     private final AiMatchRestClient aiMatchRestClient;
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/register", consumes = "multipart/form-data", produces = "application/json")
-    public LecturerDto createNewLecturer(@ModelAttribute @Validated LecturerReqDto lecturerReqDto) {
-        return lecturerService.saveLecturer(lecturerReqDto);
-    }
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{lecturer-id}", consumes = "multipart/form-data")
     public void updateLecturerDetailsViaMultipart(@PathVariable("lecturer-id") Long lecturerId,
@@ -144,13 +138,13 @@ public class LecturerHttpController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/ai-match", consumes = "application/json", produces = "application/json")
-    public AiMatchResponseDto getPrediction(@RequestBody AiMatchRequestDto requestDto) {
-        return aiMatchRestClient.getPrediction(requestDto);
+    public AiMatchResponseDto getAiMatch(@RequestBody AiMatchRequestDto requestDto) {
+        return aiMatchRestClient.getAiMatch(requestDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/ai-match/retrain")
-    public void getPrediction() {
+    public void retrainAiModel() {
         aiMatchRestClient.retrainAiMatch();
     }
 

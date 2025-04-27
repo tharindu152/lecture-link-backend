@@ -34,17 +34,17 @@ public class AiMatchRestClientImpl implements AiMatchRestClient {
     private static final Logger log = LoggerFactory.getLogger(AiMatchRestClientImpl.class);
 
     @Value("${application.smart.match.api.url}")
-    private String smartMatchUrl;
+    private String aiMatchUrl;
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final EntityManager em;
 
     @Override
-    public AiMatchResponseDto getPrediction(AiMatchRequestDto requestDto) {
+    public AiMatchResponseDto getAiMatch(AiMatchRequestDto requestDto) {
         try {
-            log.info("Sending ai-match request to external API: {}", smartMatchUrl);
-            String response = restTemplate.postForObject(smartMatchUrl + "/predict", requestDto, String.class);
+            log.info("Sending ai-match request to external API: {}", aiMatchUrl);
+            String response = restTemplate.postForObject(aiMatchUrl + "/predict", requestDto, String.class);
             return objectMapper.readValue(response, AiMatchResponseDto.class);
         } catch (Exception e) {
             throw new AppException(500, "Failed to get ai-match from external API", e);
@@ -98,8 +98,8 @@ public class AiMatchRestClientImpl implements AiMatchRestClient {
                 ))
                 .collect(Collectors.toList());
         try {
-            log.info("Sending retraining data to external API: {}", smartMatchUrl);
-            restTemplate.postForObject(smartMatchUrl + "/retrain", aiMatchDataList, String.class);
+            log.info("Sending retraining data to external API: {}", aiMatchUrl);
+            restTemplate.postForObject(aiMatchUrl + "/retrain", aiMatchDataList, String.class);
             log.info("AI retraining request sent successfully.");
         } catch (Exception e) {
             throw new AppException(500, "AI retraining failed", e);
@@ -132,5 +132,4 @@ public class AiMatchRestClientImpl implements AiMatchRestClient {
         @JsonProperty("lecturer_id")
         private BigInteger lecturerId;
     }
-
 }

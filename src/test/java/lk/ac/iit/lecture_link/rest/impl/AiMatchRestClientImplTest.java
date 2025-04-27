@@ -47,7 +47,7 @@ class AiMatchRestClientImplTest {
     }
 
     @Test
-    void getPrediction_Success() throws Exception {
+    void getAiMatch_Success() throws Exception {
         // Arrange
         AiMatchRequestDto requestDto = new AiMatchRequestDto();
         String mockResponse = "{\"prediction\":\"success\"}";
@@ -56,7 +56,7 @@ class AiMatchRestClientImplTest {
         when(objectMapper.readValue(mockResponse, AiMatchResponseDto.class)).thenReturn(expectedResponse);
 
         // Act
-        AiMatchResponseDto actualResponse = aiMatchRestClient.getPrediction(requestDto);
+        AiMatchResponseDto actualResponse = aiMatchRestClient.getAiMatch(requestDto);
 
         // Assert
         assertNotNull(actualResponse);
@@ -66,13 +66,13 @@ class AiMatchRestClientImplTest {
     }
 
     @Test
-    void getPrediction_Failure() {
+    void getAiMatch_Failure() {
         // Arrange
         AiMatchRequestDto requestDto = new AiMatchRequestDto();
         when(restTemplate.postForObject(anyString(), eq(requestDto), eq(String.class))).thenThrow(new RuntimeException("API error"));
 
         // Act & Assert
-        AppException exception = assertThrows(AppException.class, () -> aiMatchRestClient.getPrediction(requestDto));
+        AppException exception = assertThrows(AppException.class, () -> aiMatchRestClient.getAiMatch(requestDto));
         assertEquals(500, exception.getErrorCode());
         assertTrue(exception.getMessage().contains("Failed to get ai-match from external API"));
     }
