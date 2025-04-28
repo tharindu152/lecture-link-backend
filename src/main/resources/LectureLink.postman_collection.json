@@ -620,7 +620,58 @@
 						],
 						"url": "http://localhost:8080/api/v1/institutes/2"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Delete Institute",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTg0NjY1MSwiZXhwIjoxNzQ1ODU3NDUxLCJzdWIiOiJpbmZvQGVjdS5lZHUxLmxrIn0.ReE_hHU73cyyz6gnFcIRShTzNcrrB_WRhvnDR8iW3aQ",
+										"type": "text"
+									},
+									{
+										"key": "Role",
+										"value": "INSTITUTE",
+										"type": "text"
+									}
+								],
+								"url": "http://localhost:8080/api/v1/institutes/11"
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Apr 2025 13:24:38 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "Update Institute via multipart",
@@ -2386,7 +2437,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTIzMDI1OSwiZXhwIjoxNzQ1MjQxMDU5LCJzdWIiOiJjaGFuYWthMTUyQGdtYWlsLmNvbSJ9.iygfN5yLbT7pa_5xksY93WZkUH8BBWClMKgjVxF4nbY"
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTc1MzU2OCwiZXhwIjoxNzQ1NzY0MzY4LCJzdWIiOiJpbmZvQGVjdS5lZHUxLmxrIn0.90wP0AiQOckLvj7htUcwBXSmVaXijINkE9sWBebpXS8"
 							},
 							{
 								"key": "Connection",
@@ -4257,7 +4308,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTI2NTM3NSwiZXhwIjoxNzQ1Mjc2MTc1LCJzdWIiOiJscGVjLmdlbmVyYWxAZ21haWwuY29tIn0.idSvP1USD7DvK-pOUw1IUg-CJCbWrI8cA7DiVQXxgww"
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTY1NjM1NCwiZXhwIjoxNzQ1NjY3MTU0LCJzdWIiOiJpbmZvQGVjdS5lZHUxLmxrIn0.keSrqiXi-xOc5knAEwUTNYB-NTFFXMjC3AqnIx3RfVw"
 							},
 							{
 								"key": "Connection",
@@ -4310,7 +4361,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"program\": \"bachelor of business administration\",\r\n    \"hourlyPay\": 2500,\r\n    \"level\": \"bachelors\",\r\n    \"time_pref\": \"weekday\",\r\n    \"studentCount\": 200,\r\n    \"subject\": \"business information system\",\r\n    \"noOfCredits\": 3,\r\n    \"instituteRating\": 4\r\n}",
+							"raw": "{\r\n    \"program\": \"bachelor of business administration\",\r\n    \"hourly_pay\": 2500,\r\n    \"level\": \"bachelors\",\r\n    \"time_pref\": \"weekday\",\r\n    \"studentCount\": 200,\r\n    \"subject\": \"business information system\",\r\n    \"noOfCredits\": 3,\r\n    \"instituteRating\": 4,\r\n    \"duration\": 130,\r\n    \"division\": \"kotte\",\r\n    \"status\": \"active\",\r\n    \"language\": \"english\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4318,6 +4369,208 @@
 							}
 						},
 						"url": "http://localhost:8080/api/v1/lecturers/ai-match",
+						"description": "Generated from cURL: curl 'http://localhost:8080/api/v1/lecturers/ai-match' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTI2NTM3NSwiZXhwIjoxNzQ1Mjc2MTc1LCJzdWIiOiJscGVjLmdlbmVyYWxAZ21haWwuY29tIn0.idSvP1USD7DvK-pOUw1IUg-CJCbWrI8cA7DiVQXxgww' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://localhost:5173' \\\r\n  -H 'Referer: http://localhost:5173/' \\\r\n  -H 'Role: INSTITUTE' \\\r\n  -H 'Sec-Fetch-Dest: empty' \\\r\n  -H 'Sec-Fetch-Mode: cors' \\\r\n  -H 'Sec-Fetch-Site: same-site' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \\\r\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"' \\\r\n  -H 'sec-ch-ua-mobile: ?0' \\\r\n  -H 'sec-ch-ua-platform: \"Windows\"' \\\r\n  --data-raw '{\"program\":\"bachelor of business administration\",\"hourlyPay\":2500,\"level\":\"bachelors\",\"time_pref\":\"weekday\",\"studentCount\":200,\"subject\":\"business information system\",\"noOfCredits\":3,\"instituteRating\":4}'"
+					},
+					"response": [
+						{
+							"name": "http://localhost:8080/api/v1/lecturers/ai-match",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json, text/plain, */*"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "en-US,en;q=0.9"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTI2NTM3NSwiZXhwIjoxNzQ1Mjc2MTc1LCJzdWIiOiJscGVjLmdlbmVyYWxAZ21haWwuY29tIn0.idSvP1USD7DvK-pOUw1IUg-CJCbWrI8cA7DiVQXxgww"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Role",
+										"value": "INSTITUTE"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36"
+									},
+									{
+										"key": "sec-ch-ua",
+										"value": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\""
+									},
+									{
+										"key": "sec-ch-ua-mobile",
+										"value": "?0"
+									},
+									{
+										"key": "sec-ch-ua-platform",
+										"value": "\"Windows\""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"program\": \"bachelor of business administration\",\r\n    \"hourlyPay\": 2500,\r\n    \"level\": \"bachelors\",\r\n    \"time_pref\": \"weekday\",\r\n    \"studentCount\": 200,\r\n    \"subject\": \"business information system\",\r\n    \"noOfCredits\": 3,\r\n    \"instituteRating\": 4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/v1/lecturers/ai-match"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 21 Apr 2025 20:01:11 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"predicted_lecturer_id\": 6,\n    \"top_3_recommendations\": [\n        {\n            \"probability\": 0.37,\n            \"lecturer_id\": 6\n        },\n        {\n            \"probability\": 0.22,\n            \"lecturer_id\": 3\n        },\n        {\n            \"probability\": 0.13,\n            \"lecturer_id\": 4\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "AI match retrain",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.9"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTg1MDc3NCwiZXhwIjoxNzQ1ODYxNTc0LCJzdWIiOiJpbmZvQGVjdS5lZHUxLmxrIn0.yBh5ZKocOJRmiZW3dBPvaz8nIVLwmhiBzm9G2ktE0EM"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:5173"
+							},
+							{
+								"key": "Referer",
+								"value": "http://localhost:5173/"
+							},
+							{
+								"key": "Role",
+								"value": "INSTITUTE"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "same-site"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/lecturers/ai-match/retrain",
 						"description": "Generated from cURL: curl 'http://localhost:8080/api/v1/lecturers/ai-match' \\\r\n  -H 'Accept: application/json, text/plain, */*' \\\r\n  -H 'Accept-Language: en-US,en;q=0.9' \\\r\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTI2NTM3NSwiZXhwIjoxNzQ1Mjc2MTc1LCJzdWIiOiJscGVjLmdlbmVyYWxAZ21haWwuY29tIn0.idSvP1USD7DvK-pOUw1IUg-CJCbWrI8cA7DiVQXxgww' \\\r\n  -H 'Connection: keep-alive' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -H 'Origin: http://localhost:5173' \\\r\n  -H 'Referer: http://localhost:5173/' \\\r\n  -H 'Role: INSTITUTE' \\\r\n  -H 'Sec-Fetch-Dest: empty' \\\r\n  -H 'Sec-Fetch-Mode: cors' \\\r\n  -H 'Sec-Fetch-Site: same-site' \\\r\n  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' \\\r\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"' \\\r\n  -H 'sec-ch-ua-mobile: ?0' \\\r\n  -H 'sec-ch-ua-platform: \"Windows\"' \\\r\n  --data-raw '{\"program\":\"bachelor of business administration\",\"hourlyPay\":2500,\"level\":\"bachelors\",\"time_pref\":\"weekday\",\"studentCount\":200,\"subject\":\"business information system\",\"noOfCredits\":3,\"instituteRating\":4}'"
 					},
 					"response": [
@@ -4923,6 +5176,208 @@
 			]
 		},
 		{
+			"name": "Ai Match API",
+			"item": [
+				{
+					"name": "AI Match API",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"program\": \"bachelor of commerce\",\n    \"hourly_pay\": 3000,\n    \"level\": \"bachelors\",\n    \"time_pref\": \"weekend\",\n    \"student_count\": 50,\n    \"subject\": \"business statistics\",\n    \"credits\": 3,\n    \"institute_rating\": 4.8,\n    \"duration\": 130,\n    \"division\": \"kotte\",\n    \"status\": \"active\",\n    \"language\": \"english\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/predict",
+						"description": "Generated from cURL: curl -X POST http://localhost:5000/predict \\\n-H \"Content-Type: application/json\" \\\n-d '{\n    \"program\": \"bachelor of commerce\",\n    \"hourly_pay\": 3000,\n    \"level\": \"bachelors\",\n    \"time_pref\": \"weekend\",\n    \"student_count\": 50,\n    \"subject\": \"business statistics\",\n    \"credits\": 3,\n    \"institute_rating\": 4.8,\n        \"duration\": 130,\n        \"division\": \"kotte\",\n        \"status\": \"active\",\n        \"language\": \"english\"\n}'"
+					},
+					"response": [
+						{
+							"name": "http://localhost:5000/predict",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"program\": \"bachelor of commerce\",\n    \"hourly_pay\": 3000,\n    \"level\": \"bachelors\",\n    \"time_pref\": \"weekend\",\n    \"student_count\": 50,\n    \"subject\": \"business statistics\",\n    \"credits\": 3,\n    \"institute_rating\": 4.8,\n    \"duration\": 130,\n    \"division\": \"kotte\",\n    \"status\": \"active\",\n    \"language\": \"english\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:5000/predict"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.12.6"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 25 Apr 2025 15:36:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "254"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"predicted_lecturer_id\": 0,\n    \"top_3_recommendations\": [\n        {\n            \"lecturer_id\": 0,\n            \"probability\": 0.48\n        },\n        {\n            \"lecturer_id\": 3,\n            \"probability\": 0.23\n        },\n        {\n            \"lecturer_id\": 4,\n            \"probability\": 0.1\n        }\n    ]\n}"
+						},
+						{
+							"name": "http://localhost:5000/predict",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"program\": \"bachelor of commerce\",\n    \"hourly_pay\": 3000,\n    \"level\": \"bachelors\",\n    \"time_pref\": \"weekend\",\n    \"student_count\": 50,\n    \"subject\": \"business statistics\",\n    \"credits\": 3,\n    \"institute_rating\": 4.8,\n    \"duration\": 130,\n    \"division\": \"kotte\",\n    \"status\": \"active\",\n    \"language\": \"english\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:5000/predict"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.12.6"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 26 Apr 2025 11:05:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "259"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"predicted_lecturer_id\": \"10\",\n    \"top_3_recommendations\": [\n        {\n            \"lecturer_id\": 1,\n            \"probability\": 0.46\n        },\n        {\n            \"lecturer_id\": 10,\n            \"probability\": 0.24\n        },\n        {\n            \"lecturer_id\": 2,\n            \"probability\": 0.16\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Re-Train",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n      \"program\": \"Business\",\n      \"hourly_pay\": 20,\n      \"level\": \"Bachelors\",\n      \"time_pref\": \"Morning\",\n      \"student_count\": 30,\n      \"subject\": \"Finance\",\n      \"credits\": 3,\n      \"institute_rating\": 4.5,\n      \"lecturer_id\": 0\n    },\n    {\n      \"program\": \"Engineering\",\n      \"hourly_pay\": 22,\n      \"level\": \"Masters\",\n      \"time_pref\": \"Evening\",\n      \"student_count\": 25,\n      \"subject\": \"Computer Science\",\n      \"credits\": 4,\n      \"institute_rating\": 4.2,\n      \"lecturer_id\": 1\n    }\n  ]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/retrain",
+						"description": "Generated from cURL: curl -X POST http://localhost:5000/retrain \\\n  -H \"Content-Type: application/json\" \\\n  -d '[\n    {\n      \"program\": \"Business\",\n      \"hourly_pay\": 20,\n      \"level\": \"Bachelors\",\n      \"time_pref\": \"Morning\",\n      \"student_count\": 30,\n      \"subject\": \"Finance\",\n      \"credits\": 3,\n      \"institute_rating\": 4.5,\n      \"lecturer_id\": 0\n    },\n    {\n      \"program\": \"Engineering\",\n      \"hourly_pay\": 22,\n      \"level\": \"Masters\",\n      \"time_pref\": \"Evening\",\n      \"student_count\": 25,\n      \"subject\": \"Computer Science\",\n      \"credits\": 4,\n      \"institute_rating\": 4.2,\n      \"lecturer_id\": 1\n    }\n  ]'"
+					},
+					"response": [
+						{
+							"name": "http://localhost:5000/retrain",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"program\": \"Business\",\n        \"hourly_pay\": 20,\n        \"level\": \"Bachelors\",\n        \"time_pref\": \"Morning\",\n        \"student_count\": 30,\n        \"subject\": \"Finance\",\n        \"credits\": 3,\n        \"institute_rating\": 4.5,\n        \"lecturer_id\": 0,\n        \"duration\": 130,\n        \"division\": \"kotte\",\n        \"status\": \"active\",\n        \"language\": \"english\"\n    },\n    {\n        \"program\": \"Engineering\",\n        \"hourly_pay\": 22,\n        \"level\": \"Masters\",\n        \"time_pref\": \"Evening\",\n        \"student_count\": 25,\n        \"subject\": \"Computer Science\",\n        \"credits\": 4,\n        \"institute_rating\": 4.2,\n        \"lecturer_id\": 1,\n        \"duration\": 130,\n        \"division\": \"kotte\",\n        \"status\": \"active\",\n        \"language\": \"english\"\n    }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:5000/retrain"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Werkzeug/3.1.3 Python/3.12.6"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 26 Apr 2025 05:41:23 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "125"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Model trained from scratch successfully\",\n    \"n_features\": 12,\n    \"n_samples\": 2,\n    \"training_accuracy\": 1\n}"
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "Login",
 			"request": {
 				"method": "POST",
@@ -4994,80 +5449,6 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"id\": 1,\n    \"role\": \"INSTITUTE\",\n    \"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMZWN0dXJlTGluayIsImlhdCI6MTc0NTIzMDExMiwiZXhwIjoxNzQ1MjQwOTEyLCJzdWIiOiJpbmZvQGVjdS5lZHUxLmxrIn0.7Sbnd4qXLV2o1Pp3dKCB0oQOWpB2zwf_T0dNj2Gp9Uc\"\n}"
-				}
-			]
-		},
-		{
-			"name": "AI Match API",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"program\": \"bachelor of business administration\",\r\n    \"hourly_pay\": 2500,\r\n    \"level\": \"bachelors\",\r\n    \"time_pref\": \"weekday\",\r\n    \"student_count\": 200,\r\n    \"subject\": \"business information system\",\r\n    \"credits\": 3,\r\n    \"institute_rating\": 4\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:5000/predict",
-				"description": "Generated from cURL: curl -X POST http://localhost:5000/predict \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n    \"program\": \"Bachelor of Commerce\",\r\n    \"hourly_pay\": 3000,\r\n    \"level\": \"Bachelors\",\r\n    \"time_pref\": \"Weekend\",\r\n    \"student_count\": 50,\r\n    \"subject\": \"Business Analytics\",\r\n    \"credits\": 3,\r\n    \"institute_rating\": 4.8\r\n}'"
-			},
-			"response": [
-				{
-					"name": "http://localhost:5000/predict",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"program\": \"bachelor of business administration\",\r\n    \"hourly_pay\": 2500,\r\n    \"level\": \"bachelors\",\r\n    \"time_pref\": \"weekday\",\r\n    \"student_count\": 200,\r\n    \"subject\": \"business information system\",\r\n    \"credits\": 3,\r\n    \"institute_rating\": 4\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:5000/predict"
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Server",
-							"value": "Werkzeug/3.1.3 Python/3.12.6"
-						},
-						{
-							"key": "Date",
-							"value": "Mon, 21 Apr 2025 20:04:44 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "255"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"predicted_lecturer_id\": 6,\n    \"top_3_recommendations\": [\n        {\n            \"lecturer_id\": 6,\n            \"probability\": 0.74\n        },\n        {\n            \"lecturer_id\": 3,\n            \"probability\": 0.13\n        },\n        {\n            \"lecturer_id\": 4,\n            \"probability\": 0.07\n        }\n    ]\n}"
 				}
 			]
 		}
