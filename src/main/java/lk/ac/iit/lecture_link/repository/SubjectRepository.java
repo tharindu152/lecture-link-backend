@@ -18,23 +18,23 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
             "JOIN s.programs p " +
             "JOIN p.institute i " +
             "WHERE (:division IS NULL OR i.division LIKE CONCAT('%', :division, '%')) " +
-            "  AND (:programLevel IS NULL OR p.level LIKE CONCAT('%', :programLevel, '%')) " +
-            "  AND (:credits IS NULL OR s.noOfCredits = :credits) " +
-            "  AND (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.hourlyPayRate > :paymentLower AND p.hourlyPayRate < :paymentUpper)) " +
-            "  AND (:durationUpper IS NULL OR :durationLower IS NULL OR (p.durationInDays > :durationLower AND p.durationInDays < :durationUpper)) " +
-            "  AND (:studentUpper IS NULL OR :studentLower IS NULL OR (p.studentCount > :studentLower AND p.studentCount < :studentUpper)) " +
-            "  AND (:globalSearch IS NULL OR s.name LIKE CONCAT('%', :globalSearch, '%') OR s.description LIKE CONCAT('%', :globalSearch, '%'))",
+            "  OR (:programLevel IS NULL OR p.level LIKE CONCAT('%', :programLevel, '%')) " +
+            "  OR (:credits IS NULL OR s.noOfCredits = :credits) " +
+            "  OR (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.hourlyPayRate > :paymentLower AND p.hourlyPayRate < :paymentUpper)) " +
+            "  OR (:durationUpper IS NULL OR :durationLower IS NULL OR (p.durationInDays > :durationLower AND p.durationInDays < :durationUpper)) " +
+            "  OR (:studentUpper IS NULL OR :studentLower IS NULL OR (p.studentCount > :studentLower AND p.studentCount < :studentUpper)) " +
+            "  OR (:globalSearch IS NULL OR s.name LIKE CONCAT('%', :globalSearch, '%') OR s.description LIKE CONCAT('%', :globalSearch, '%'))",
             countQuery = "SELECT COUNT(DISTINCT s) " +
                     "FROM Subject s " +
                     "JOIN s.programs p " +
                     "JOIN p.institute i " +
                     "WHERE (:division IS NULL OR i.division LIKE CONCAT('%', :division, '%')) " +
-                    "  AND (:programLevel IS NULL OR p.level LIKE CONCAT('%', :programLevel, '%')) " +
-                    "  AND (:credits IS NULL OR s.noOfCredits = :credits) " +
-                    "  AND (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.hourlyPayRate > :paymentLower AND p.hourlyPayRate < :paymentUpper)) " +
-                    "  AND (:durationUpper IS NULL OR :durationLower IS NULL OR (p.durationInDays > :durationLower AND p.durationInDays < :durationUpper)) " +
-                    "  AND (:studentUpper IS NULL OR :studentLower IS NULL OR (p.studentCount > :studentLower AND p.studentCount < :studentUpper)) " +
-                    "  AND (:globalSearch IS NULL OR s.name LIKE CONCAT('%', :globalSearch, '%') OR s.description LIKE CONCAT('%', :globalSearch, '%'))")
+                    "  OR (:programLevel IS NULL OR p.level LIKE CONCAT('%', :programLevel, '%')) " +
+                    "  OR (:credits IS NULL OR s.noOfCredits = :credits) " +
+                    "  OR (:paymentUpper IS NULL OR :paymentLower IS NULL OR (p.hourlyPayRate > :paymentLower AND p.hourlyPayRate < :paymentUpper)) " +
+                    "  OR (:durationUpper IS NULL OR :durationLower IS NULL OR (p.durationInDays > :durationLower AND p.durationInDays < :durationUpper)) " +
+                    "  OR (:studentUpper IS NULL OR :studentLower IS NULL OR (p.studentCount > :studentLower AND p.studentCount < :studentUpper)) " +
+                    "  OR (:globalSearch IS NULL OR s.name LIKE CONCAT('%', :globalSearch, '%') OR s.description LIKE CONCAT('%', :globalSearch, '%'))")
     Page<Object[]> findFilteredSubjects(
             @Param("division") String division,
             @Param("programLevel") String programLevel,
