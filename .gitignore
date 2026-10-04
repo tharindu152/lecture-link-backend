@@ -1,5 +1,9 @@
 logs/
 target/
+.env
+__pycache__/
+*.py[cod]
+.venv/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
