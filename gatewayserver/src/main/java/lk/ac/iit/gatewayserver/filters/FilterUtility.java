@@ -1,4 +1,4 @@
-package com.eazybytes.gatewayserver.filters;
+package lk.ac.iit.gatewayserver.filters;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public class FilterUtility {
 
-    public static final String CORRELATION_ID = "eazybank-correlation-id";
+    public static final String CORRELATION_ID = "lecturelink-correlation-id";
 
     public String getCorrelationId(HttpHeaders requestHeaders) {
         if (requestHeaders.get(CORRELATION_ID) != null) {
