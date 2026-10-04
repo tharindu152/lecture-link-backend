@@ -1,0 +1,1157 @@
+{
+  "info": {
+    "_postman_id": "3f72bdf8-d307-4554-bac6-c30ed1bb8e72",
+    "name": "LectureLink Microservices",
+    "description": "LectureLink APIs protected by Keycloak. Provision users and assign INSTITUTE or LECTURER realm roles in Keycloak. Use Postman OAuth 2.0 Authorization Code with PKCE to acquire a token, then set the instituteToken or lecturerToken collection variable. Health endpoints are public.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "gatewayUrl",
+      "value": "http://localhost:8072"
+    },
+    {
+      "key": "instituteUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "lecturerUrl",
+      "value": "http://localhost:9000"
+    },
+    {
+      "key": "instituteToken",
+      "value": ""
+    },
+    {
+      "key": "lecturerToken",
+      "value": ""
+    },
+    {
+      "key": "instituteId",
+      "value": "1"
+    },
+    {
+      "key": "lecturerId",
+      "value": "1"
+    },
+    {
+      "key": "programId",
+      "value": "1"
+    },
+    {
+      "key": "subjectId",
+      "value": "1"
+    },
+    {
+      "key": "qualificationId",
+      "value": "1"
+    },
+    {
+      "key": "keycloakUrl",
+      "value": "http://localhost:7080"
+    },
+    {
+      "key": "keycloakRealm",
+      "value": "lecturelink"
+    },
+    {
+      "key": "aiMatchUrl",
+      "value": "http://localhost:5000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Keycloak",
+      "description": "Create users in the lecturelink realm and assign one realm role. In Postman, use OAuth 2.0 Authorization Code (With PKCE), client ID lecturelink-postman, scope openid, auth URL {{keycloakUrl}}/realms/{{keycloakRealm}}/protocol/openid-connect/auth, token URL {{keycloakUrl}}/realms/{{keycloakRealm}}/protocol/openid-connect/token, and callback https://oauth.pstmn.io/v1/callback. Copy an INSTITUTE-role token to instituteToken and a LECTURER-role token to lecturerToken.",
+      "item": [
+        {
+          "name": "OIDC discovery document",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{keycloakUrl}}/realms/{{keycloakRealm}}/.well-known/openid-configuration"
+          }
+        },
+        {
+          "name": "Realm signing keys",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{keycloakUrl}}/realms/{{keycloakRealm}}/protocol/openid-connect/certs"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health and discovery",
+      "item": [
+        {
+          "name": "Gateway health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{gatewayUrl}}/actuator/health"
+          }
+        },
+        {
+          "name": "Institute service readiness (direct)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{instituteUrl}}/actuator/health/readiness"
+          }
+        },
+        {
+          "name": "Lecturer service readiness (direct)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{lecturerUrl}}/actuator/health/readiness"
+          }
+        },
+        {
+          "name": "AI match health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{aiMatchUrl}}/health"
+          }
+        },
+        {
+          "name": "Eureka home",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8070/"
+          }
+        },
+        {
+          "name": "Config server health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8071/actuator/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Institute service - authenticated",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{instituteToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "item": [
+        {
+          "name": "Institutes",
+          "item": [
+            {
+              "name": "List institutes",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/institutes"
+              }
+            },
+            {
+              "name": "List institutes by division",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/institutes?division=Colombo"
+              }
+            },
+            {
+              "name": "Get institute",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/institutes/{{instituteId}}"
+              }
+            },
+            {
+              "name": "Get institute for lecturer",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/institutes/lecturer/{{lecturerId}}"
+              }
+            },
+            {
+              "name": "Filter institutes",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/institutes/filter?division=Colombo&status=ACTIVE&page=0&size=10"
+              }
+            },
+            {
+              "name": "Create institute (JSON)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "  const body = pm.response.json();",
+                      "  if (body.id !== undefined) pm.collectionVariables.set('instituteId', body.id);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Example Institute\",\n  \"email\": \"institute@example.com\",\n  \"division\": \"Colombo\",\n  \"mapsLocation\": \"Colombo, Sri Lanka\",\n  \"telephone\": \"+94112345678\",\n  \"description\": \"Example institute\",\n  \"logoUrl\": \"https://example.com/logo.png\",\n  \"currentRating\": 0,\n  \"ratingsReceived\": 0,\n  \"subscribed\": false,\n  \"status\": \"ACTIVE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/institutes"
+              }
+            },
+            {
+              "name": "Create institute (multipart with optional logo)",
+              "request": {
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Example Institute",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "institute@example.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "division",
+                      "value": "Colombo",
+                      "type": "text"
+                    },
+                    {
+                      "key": "telephone",
+                      "value": "+94112345678",
+                      "type": "text"
+                    },
+                    {
+                      "key": "logo",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": "{{gatewayUrl}}/api/v1/institutes"
+              }
+            },
+            {
+              "name": "Update institute",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Example Institute Updated\",\n  \"email\": \"institute@example.com\",\n  \"division\": \"Colombo\",\n  \"mapsLocation\": \"Colombo, Sri Lanka\",\n  \"telephone\": \"+94112345678\",\n  \"description\": \"Updated institute details\",\n  \"logoUrl\": \"https://example.com/logo.png\",\n  \"currentRating\": 0,\n  \"ratingsReceived\": 0,\n  \"subscribed\": false,\n  \"status\": \"ACTIVE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/institutes/{{instituteId}}"
+              }
+            },
+            {
+              "name": "Update institute (multipart with optional logo)",
+              "request": {
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Example Institute Updated",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "institute@example.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "division",
+                      "value": "Colombo",
+                      "type": "text"
+                    },
+                    {
+                      "key": "telephone",
+                      "value": "+94112345678",
+                      "type": "text"
+                    },
+                    {
+                      "key": "logo",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": "{{gatewayUrl}}/api/v1/institutes/{{instituteId}}"
+              }
+            },
+            {
+              "name": "Patch institute",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Example Institute Updated\",\n  \"email\": \"institute@example.com\",\n  \"division\": \"Colombo\",\n  \"description\": \"Updated institute details\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/institutes/{{instituteId}}"
+              }
+            },
+            {
+              "name": "Update institute rating",
+              "request": {
+                "method": "PATCH",
+                "url": "{{gatewayUrl}}/api/v1/institutes/{{instituteId}}/rating?newRating=5"
+              }
+            },
+            {
+              "name": "Subscribe/unsubscribe institute",
+              "request": {
+                "method": "PATCH",
+                "url": "{{gatewayUrl}}/api/v1/institutes/{{instituteId}}/subscribe?subscribed=true"
+              }
+            },
+            {
+              "name": "Deactivate institute",
+              "request": {
+                "method": "PATCH",
+                "url": "{{gatewayUrl}}/api/v1/institutes/{{instituteId}}/deactivate"
+              }
+            },
+            {
+              "name": "Get email by subject",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/institutes/email-by-subject/{{subjectId}}"
+              }
+            },
+            {
+              "name": "Delete institute",
+              "request": {
+                "method": "DELETE",
+                "url": "{{gatewayUrl}}/api/v1/institutes/{{instituteId}}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Programs",
+          "item": [
+            {
+              "name": "List programs",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/programs?instituteId={{instituteId}}"
+              }
+            },
+            {
+              "name": "Get program",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/programs/{{programId}}"
+              }
+            },
+            {
+              "name": "List programs for lecturer",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/programs/lecturer/{{lecturerId}}"
+              }
+            },
+            {
+              "name": "Filter programs",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/programs/filter?level=BACHELORS&page=0&size=10"
+              }
+            },
+            {
+              "name": "Create program",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "  const body = pm.response.json();",
+                      "  if (body.id !== undefined) pm.collectionVariables.set('programId', body.id);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Bachelor of Commerce\",\n  \"description\": \"Example undergraduate program\",\n  \"level\": \"BACHELORS\",\n  \"durationInDays\": 1095,\n  \"studentCount\": 50,\n  \"language\": \"ENGLISH\",\n  \"batchId\": \"2026-A\",\n  \"hourlyPayRate\": 3300,\n  \"timePreference\": \"WEEKEND\",\n  \"instituteId\": {{instituteId}},\n  \"subjectIds\": []\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/programs"
+              }
+            },
+            {
+              "name": "Update program",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Bachelor of Commerce\",\n  \"description\": \"Updated undergraduate program\",\n  \"level\": \"BACHELORS\",\n  \"durationInDays\": 1095,\n  \"studentCount\": 50,\n  \"language\": \"ENGLISH\",\n  \"batchId\": \"2026-A\",\n  \"hourlyPayRate\": 3300,\n  \"timePreference\": \"WEEKEND\",\n  \"instituteId\": {{instituteId}},\n  \"subjectIds\": []\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/programs/{{programId}}"
+              }
+            },
+            {
+              "name": "Patch program",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Bachelor of Commerce\",\n  \"description\": \"Updated undergraduate program\",\n  \"level\": \"BACHELORS\",\n  \"durationInDays\": 1095,\n  \"studentCount\": 50,\n  \"language\": \"ENGLISH\",\n  \"timePreference\": \"WEEKEND\",\n  \"instituteId\": {{instituteId}},\n  \"subjectIds\": []\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/programs/{{programId}}"
+              }
+            },
+            {
+              "name": "Delete program",
+              "request": {
+                "method": "DELETE",
+                "url": "{{gatewayUrl}}/api/v1/programs/{{programId}}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Subjects",
+          "item": [
+            {
+              "name": "List subjects",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/subjects?name=Management"
+              }
+            },
+            {
+              "name": "List subjects by lecturer",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/subjects?lecturerId={{lecturerId}}"
+              }
+            },
+            {
+              "name": "Get subject",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/subjects/{{subjectId}}"
+              }
+            },
+            {
+              "name": "Filter subjects",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/subjects/filter?division=Colombo&programLevel=BACHELORS&credits=3&page=0&size=10"
+              }
+            },
+            {
+              "name": "Create subject",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "  const body = pm.response.json();",
+                      "  if (body.id !== undefined) pm.collectionVariables.set('subjectId', body.id);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Strategic Management\",\n  \"noOfCredits\": 3,\n  \"description\": \"Example subject\",\n  \"isAssigned\": false,\n  \"lecturerId\": {{lecturerId}}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/subjects"
+              }
+            },
+            {
+              "name": "Update subject",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Strategic Management\",\n  \"noOfCredits\": 3,\n  \"description\": \"Updated subject description\",\n  \"isAssigned\": false,\n  \"lecturerId\": {{lecturerId}}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/subjects/{{subjectId}}"
+              }
+            },
+            {
+              "name": "Patch subject",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Strategic Management\",\n  \"noOfCredits\": 3,\n  \"description\": \"Updated subject description\",\n  \"isAssigned\": false,\n  \"lecturerId\": {{lecturerId}}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/subjects/{{subjectId}}"
+              }
+            },
+            {
+              "name": "Delete subject",
+              "request": {
+                "method": "DELETE",
+                "url": "{{gatewayUrl}}/api/v1/subjects/{{subjectId}}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Institute email",
+          "item": [
+            {
+              "name": "Send email",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"toEmail\": \"recipient@example.com\",\n  \"subject\": \"LectureLink message\",\n  \"body\": \"Example message body\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/email/send"
+              },
+              "auth": {
+                "type": "noauth"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lecturer service - authenticated",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{lecturerToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "item": [
+        {
+          "name": "Lecturers",
+          "item": [
+            {
+              "name": "List lecturers",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/lecturers"
+              }
+            },
+            {
+              "name": "List lecturers by institute and division",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/lecturers?instituteId={{instituteId}}&division=Colombo"
+              }
+            },
+            {
+              "name": "Get lecturer",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}"
+              }
+            },
+            {
+              "name": "List lecturers for institute",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/lecturers/institutes/{{instituteId}}"
+              }
+            },
+            {
+              "name": "Filter lecturers",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/lecturers/filter?division=Colombo&language=ENGLISH&isAssigned=false&page=0&size=10"
+              }
+            },
+            {
+              "name": "Create lecturer",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "  const body = pm.response.json();",
+                      "  if (body.id !== undefined) pm.collectionVariables.set('lecturerId', body.id);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Example Lecturer\",\n  \"division\": \"Colombo\",\n  \"mapsLocation\": \"Colombo, Sri Lanka\",\n  \"email\": \"lecturer@example.com\",\n  \"contactNo\": \"+94771234567\",\n  \"hourlyPayRate\": 3300,\n  \"preference\": \"Weekend classes\",\n  \"language\": \"ENGLISH\",\n  \"lecturingExperience\": 5,\n  \"fieldOfWork\": \"Management\",\n  \"timePreference\": \"WEEKEND\",\n  \"instituteId\": {{instituteId}},\n  \"pictureUrl\": \"https://example.com/lecturer.png\",\n  \"currentRating\": 0,\n  \"ratingsReceived\": 0,\n  \"isAssigned\": false,\n  \"subscribed\": false,\n  \"status\": \"ACTIVE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/lecturers"
+              }
+            },
+            {
+              "name": "Create lecturer (multipart with optional picture)",
+              "request": {
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Example Lecturer",
+                      "type": "text"
+                    },
+                    {
+                      "key": "division",
+                      "value": "Colombo",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "lecturer@example.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "language",
+                      "value": "ENGLISH",
+                      "type": "text"
+                    },
+                    {
+                      "key": "timePreference",
+                      "value": "WEEKEND",
+                      "type": "text"
+                    },
+                    {
+                      "key": "instituteId",
+                      "value": "{{instituteId}}",
+                      "type": "text"
+                    },
+                    {
+                      "key": "picture",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": "{{gatewayUrl}}/api/v1/lecturers"
+              }
+            },
+            {
+              "name": "Update lecturer",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Example Lecturer Updated\",\n  \"division\": \"Colombo\",\n  \"mapsLocation\": \"Colombo, Sri Lanka\",\n  \"email\": \"lecturer@example.com\",\n  \"contactNo\": \"+94771234567\",\n  \"hourlyPayRate\": 3500,\n  \"preference\": \"Weekend classes\",\n  \"language\": \"ENGLISH\",\n  \"lecturingExperience\": 6,\n  \"fieldOfWork\": \"Management\",\n  \"timePreference\": \"WEEKEND\",\n  \"instituteId\": {{instituteId}},\n  \"pictureUrl\": \"https://example.com/lecturer.png\",\n  \"currentRating\": 0,\n  \"ratingsReceived\": 0,\n  \"isAssigned\": false,\n  \"subscribed\": false,\n  \"status\": \"ACTIVE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}"
+              }
+            },
+            {
+              "name": "Update lecturer (multipart with optional picture)",
+              "request": {
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Example Lecturer Updated",
+                      "type": "text"
+                    },
+                    {
+                      "key": "division",
+                      "value": "Colombo",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "lecturer@example.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "language",
+                      "value": "ENGLISH",
+                      "type": "text"
+                    },
+                    {
+                      "key": "picture",
+                      "type": "file",
+                      "src": ""
+                    }
+                  ]
+                },
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}"
+              }
+            },
+            {
+              "name": "Patch lecturer",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Example Lecturer Updated\",\n  \"division\": \"Colombo\",\n  \"email\": \"lecturer@example.com\",\n  \"language\": \"ENGLISH\",\n  \"instituteId\": {{instituteId}}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}"
+              }
+            },
+            {
+              "name": "Update lecturer rating",
+              "request": {
+                "method": "PATCH",
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}/rating?newRating=5"
+              }
+            },
+            {
+              "name": "Subscribe/unsubscribe lecturer",
+              "request": {
+                "method": "PATCH",
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}/subscribe?subscribed=true"
+              }
+            },
+            {
+              "name": "Assign/unassign lecturer",
+              "request": {
+                "method": "PATCH",
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}/assign?assign=true"
+              }
+            },
+            {
+              "name": "Deactivate lecturer",
+              "request": {
+                "method": "PATCH",
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}/deactivate"
+              }
+            },
+            {
+              "name": "Delete lecturer",
+              "request": {
+                "method": "DELETE",
+                "url": "{{gatewayUrl}}/api/v1/lecturers/{{lecturerId}}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Qualifications",
+          "item": [
+            {
+              "name": "List qualifications",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/qualifications?lecturerId={{lecturerId}}"
+              }
+            },
+            {
+              "name": "Get qualification",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/qualifications/{{qualificationId}}"
+              }
+            },
+            {
+              "name": "Filter qualifications",
+              "request": {
+                "method": "GET",
+                "url": "{{gatewayUrl}}/api/v1/qualifications/filter?level=MASTERS&page=0&size=10"
+              }
+            },
+            {
+              "name": "Create qualification",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "if (pm.response.code === 201) {",
+                      "  const body = pm.response.json();",
+                      "  if (body.id !== undefined) pm.collectionVariables.set('qualificationId', body.id);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Master of Business Administration\",\n  \"awardingBody\": \"Example University\",\n  \"durationInDays\": 730,\n  \"discipline\": \"Management\",\n  \"completedAt\": \"2024-12-01\",\n  \"level\": \"MASTERS\",\n  \"lecturerId\": {{lecturerId}}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/qualifications"
+              }
+            },
+            {
+              "name": "Update qualification",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Master of Business Administration\",\n  \"awardingBody\": \"Example University\",\n  \"durationInDays\": 730,\n  \"discipline\": \"Management\",\n  \"completedAt\": \"2024-12-01\",\n  \"level\": \"MASTERS\",\n  \"lecturerId\": {{lecturerId}}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/qualifications/{{qualificationId}}"
+              }
+            },
+            {
+              "name": "Delete qualification",
+              "request": {
+                "method": "DELETE",
+                "url": "{{gatewayUrl}}/api/v1/qualifications/{{qualificationId}}"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Lecturer email",
+          "item": [
+            {
+              "name": "Send email (lecturer service)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"toEmail\": \"recipient@example.com\",\n  \"subject\": \"LectureLink message\",\n  \"body\": \"Example message body\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/lecturers/email/send"
+              },
+              "auth": {
+                "type": "noauth"
+              }
+            }
+          ]
+        },
+        {
+          "name": "AI matching (through lecturer service)",
+          "item": [
+            {
+              "name": "Predict lecturer match",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"program\": \"Bachelor of Commerce\",\n  \"hourly_pay\": 3300,\n  \"level\": \"Bachelors\",\n  \"time_pref\": \"Weekend\",\n  \"student_count\": 50,\n  \"subject\": \"Strategic Management\",\n  \"credits\": 3,\n  \"institute_rating\": 4.8,\n  \"duration\": 1095,\n  \"division\": \"Kotte\",\n  \"status\": \"ACTIVE\",\n  \"language\": \"English\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/lecturers/ai-match"
+              }
+            },
+            {
+              "name": "Retrain lecturer match model (through lecturer service)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"program\": \"Bachelor of Commerce\",\n    \"hourly_pay\": 3300,\n    \"level\": \"Bachelors\",\n    \"time_pref\": \"Weekend\",\n    \"student_count\": 50,\n    \"subject\": \"Strategic Management\",\n    \"credits\": 3,\n    \"institute_rating\": 4.8,\n    \"duration\": 1095,\n    \"division\": \"Kotte\",\n    \"status\": \"ACTIVE\",\n    \"language\": \"English\",\n    \"lecturer_id\": 5\n  },\n  {\n    \"program\": \"Bachelor of Commerce\",\n    \"hourly_pay\": 3300,\n    \"level\": \"Bachelors\",\n    \"time_pref\": \"Weekday\",\n    \"student_count\": 35,\n    \"subject\": \"Business Statistics\",\n    \"credits\": 3,\n    \"institute_rating\": 4.8,\n    \"duration\": 1095,\n    \"division\": \"Kotte\",\n    \"status\": \"ACTIVE\",\n    \"language\": \"English\",\n    \"lecturer_id\": 2\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "{{gatewayUrl}}/api/v1/lecturers/ai-match/retrain",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{instituteToken}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AI match service - direct",
+      "item": [
+        {
+          "name": "Predict lecturer match",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"program\": \"Bachelor of Commerce\",\n  \"hourly_pay\": 3300,\n  \"level\": \"Bachelors\",\n  \"time_pref\": \"Weekend\",\n  \"student_count\": 50,\n  \"subject\": \"Strategic Management\",\n  \"credits\": 3,\n  \"institute_rating\": 4.8,\n  \"duration\": 1095,\n  \"division\": \"Kotte\",\n  \"status\": \"ACTIVE\",\n  \"language\": \"English\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{aiMatchUrl}}/predict",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{lecturerToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Retrain lecturer match model (destructive: replaces model)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"program\": \"Bachelor of Commerce\",\n    \"hourly_pay\": 3300,\n    \"level\": \"Bachelors\",\n    \"time_pref\": \"Weekend\",\n    \"student_count\": 50,\n    \"subject\": \"Strategic Management\",\n    \"credits\": 3,\n    \"institute_rating\": 4.8,\n    \"duration\": 1095,\n    \"division\": \"Kotte\",\n    \"status\": \"ACTIVE\",\n    \"language\": \"English\",\n    \"lecturer_id\": 5\n  },\n  {\n    \"program\": \"Bachelor of Commerce\",\n    \"hourly_pay\": 3300,\n    \"level\": \"Bachelors\",\n    \"time_pref\": \"Weekday\",\n    \"student_count\": 35,\n    \"subject\": \"Business Statistics\",\n    \"credits\": 3,\n    \"institute_rating\": 4.8,\n    \"duration\": 1095,\n    \"division\": \"Kotte\",\n    \"status\": \"ACTIVE\",\n    \"language\": \"English\",\n    \"lecturer_id\": 2\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{aiMatchUrl}}/retrain",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{instituteToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
