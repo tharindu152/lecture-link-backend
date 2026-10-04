@@ -1,0 +1,36 @@
+{
+  "realm": "lecturelink",
+  "enabled": true,
+  "roles": {
+    "realm": [
+      { "name": "INSTITUTE" },
+      { "name": "LECTURER" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "lecturelink-postman",
+      "name": "LectureLink Postman",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "https://oauth.pstmn.io/v1/callback"
+      ],
+      "webOrigins": [
+        "https://oauth.pstmn.io"
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "email"
+      ]
+    }
+  ]
+}
