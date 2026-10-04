@@ -1,4 +1,4 @@
-package com.eazybytes.eurekaserver;
+package lk.ac.iit.eurekaserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
