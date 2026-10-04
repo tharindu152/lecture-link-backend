@@ -1,4 +1,7 @@
 services:
+  ai-match-service:
+    environment:
+      CONFIG_PROFILE: qa
   institute-service:
     environment:
       SPRING_PROFILES_ACTIVE: qa

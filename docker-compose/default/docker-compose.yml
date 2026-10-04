@@ -159,6 +159,9 @@ services:
       - "5000:5000"
     environment:
       MODEL_DIR: /model
+      CONFIG_SERVER_URL: http://configserver:8071
+      CONFIG_PROFILE: ${CONFIG_PROFILE:-default}
+      EUREKA_URL: http://eurekaserver:8070/eureka/
       KEYCLOAK_ISSUER_URI: http://localhost:7080/realms/lecturelink
       KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/lecturelink/protocol/openid-connect/certs
     volumes:
@@ -169,6 +172,11 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     networks: [lecturelink]
 
   gatewayserver:

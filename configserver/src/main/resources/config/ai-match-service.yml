@@ -1,0 +1,17 @@
+server:
+  port: ${SERVER_PORT:5000}
+spring:
+  application:
+    name: ai-match-service
+application:
+  ai-match:
+    model-dir: ${MODEL_DIR:/model}
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8070/eureka/}
+info:
+  app:
+    name: ai-match-service
+    description: LectureLink AI lecturer matching
+    version: 1.0.0

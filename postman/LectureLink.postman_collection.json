@@ -28,6 +28,14 @@
       "value": ""
     },
     {
+      "key": "authorizationCode",
+      "value": ""
+    },
+    {
+      "key": "codeVerifier",
+      "value": ""
+    },
+    {
       "key": "instituteId",
       "value": "1"
     },
@@ -79,6 +87,45 @@
             "method": "GET",
             "header": [],
             "url": "{{keycloakUrl}}/realms/{{keycloakRealm}}/protocol/openid-connect/certs"
+          }
+        },
+        {
+          "name": "Exchange authorization code for token (PKCE)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "lecturelink-postman",
+                  "type": "text"
+                },
+                {
+                  "key": "code",
+                  "value": "{{authorizationCode}}",
+                  "type": "text"
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "https://oauth.pstmn.io/v1/callback",
+                  "type": "text"
+                },
+                {
+                  "key": "code_verifier",
+                  "value": "{{codeVerifier}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{keycloakUrl}}/realms/{{keycloakRealm}}/protocol/openid-connect/token",
+            "description": "Keycloak's standard OpenID Connect token endpoint, not a LectureLink backend endpoint. For normal use, choose OAuth 2.0 Authorization Code (With PKCE) in Postman's Authorization tab and click Get New Access Token; Postman performs this exchange. To send this request manually, provide a fresh authorizationCode and the matching codeVerifier used to create its PKCE S256 challenge. Authorization codes are single-use and short-lived."
           }
         }
       ]
