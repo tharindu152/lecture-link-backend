@@ -1,123 +1,209 @@
 services:
   configserver:
-    image: "eazybytes/configserver:s9"
-    container_name: configserver-ms
+    image: lecturelink/configserver:latest
+    build: ../../configserver
     ports:
       - "8071:8071"
     healthcheck:
-      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      test: ["CMD-SHELL", "curl --fail --silent localhost:8071/actuator/health/readiness | grep -q UP"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 10s
-    extends:
-      file: common-config.yml
-      service: microservice-base-config
+      start_period: 15s
+    networks: [lecturelink]
 
   eurekaserver:
-    image: "eazybytes/eurekaserver:s9"
-    container_name: eurekaserver-ms
+    image: lecturelink/eurekaserver:latest
+    build: ../../eurekaserver
     ports:
       - "8070:8070"
+    environment:
+      CONFIG_SERVER_URL: http://configserver:8071/
+      EUREKA_HOST: eurekaserver
     depends_on:
       configserver:
         condition: service_healthy
     healthcheck:
-      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      test: ["CMD-SHELL", "curl --fail --silent localhost:8070/actuator/health/readiness | grep -q UP"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 10s
-    extends:
-      file: common-config.yml
-      service: microservice-configserver-config
-    environment:
-      SPRING_APPLICATION_NAME: "eurekaserver"
+      start_period: 15s
+    networks: [lecturelink]
 
-  accounts:
-    image: "eazybytes/accounts:s9"
-    container_name: accounts-ms
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.7
+    profiles: [local]
+    command: ["start-dev", "--import-realm"]
+    ports:
+      - "7080:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USERNAME:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_HOSTNAME: http://localhost:7080
+      KC_HEALTH_ENABLED: "true"
+    volumes:
+      - ../../keycloak:/opt/keycloak/data/import:ro
+      - keycloak-data:/opt/keycloak/data
+    networks: [lecturelink]
+
+  institute-db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: institute
+      MYSQL_USER: institute
+      MYSQL_PASSWORD: ${INSTITUTE_DB_PASSWORD:-institute-local-only}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-lecturelink-local-only}
+    volumes:
+      - institute-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks: [lecturelink]
+
+  lecturer-db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: lecturer
+      MYSQL_USER: lecturer
+      MYSQL_PASSWORD: ${LECTURER_DB_PASSWORD:-lecturer-local-only}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-lecturelink-local-only}
+    volumes:
+      - lecturer-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks: [lecturelink]
+
+  institute-service:
+    image: lecturelink/institute-service:latest
+    build: ../../institute-service
     ports:
       - "8080:8080"
+    environment:
+      CONFIG_SERVER_URL: http://configserver:8071/
+      EUREKA_URL: http://eurekaserver:8070/eureka/
+      DB_URL: jdbc:mysql://institute-db:3306/institute?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: institute
+      DB_PASSWORD: ${INSTITUTE_DB_PASSWORD:-institute-local-only}
+      KEYCLOAK_ISSUER_URI: http://localhost:7080/realms/lecturelink
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/lecturelink/protocol/openid-connect/certs
+      MAIL_HOST: ${MAIL_HOST:-localhost}
+      MAIL_PORT: ${MAIL_PORT:-25}
+      MAIL_USERNAME: ${MAIL_USERNAME:-no-reply@lecturelink.local}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      FIREBASE_ENABLED: ${FIREBASE_ENABLED:-false}
+      FIREBASE_STORAGE_BUCKET: ${FIREBASE_STORAGE_BUCKET:-}
     depends_on:
       configserver:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
+      institute-db:
+        condition: service_healthy
     healthcheck:
-      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      test: ["CMD-SHELL", "curl --fail --silent localhost:8080/actuator/health/readiness | grep -q UP"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 10s
-    environment:
-      SPRING_APPLICATION_NAME: "accounts"
-    extends:
-      file: common-config.yml
-      service: microservice-eureka-config
+      start_period: 25s
+    networks: [lecturelink]
 
-  loans:
-    image: "eazybytes/loans:s9"
-    container_name: loans-ms
-    ports:
-      - "8090:8090"
-    depends_on:
-      configserver:
-        condition: service_healthy
-      eurekaserver:
-        condition: service_healthy
-    healthcheck:
-      test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
-    environment:
-      SPRING_APPLICATION_NAME: "loans"
-    extends:
-      file: common-config.yml
-      service: microservice-eureka-config
-
-  cards:
-    image: "eazybytes/cards:s9"
-    container_name: cards-ms
+  lecturer-service:
+    image: lecturelink/lecturer-service:latest
+    build: ../../lecturer-service
     ports:
       - "9000:9000"
+    environment:
+      CONFIG_SERVER_URL: http://configserver:8071/
+      EUREKA_URL: http://eurekaserver:8070/eureka/
+      DB_URL: jdbc:mysql://lecturer-db:3306/lecturer?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: lecturer
+      DB_PASSWORD: ${LECTURER_DB_PASSWORD:-lecturer-local-only}
+      KEYCLOAK_ISSUER_URI: http://localhost:7080/realms/lecturelink
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/lecturelink/protocol/openid-connect/certs
+      AI_MATCH_URL: http://ai-match-service:5000
+      MAIL_HOST: ${MAIL_HOST:-localhost}
+      MAIL_PORT: ${MAIL_PORT:-25}
+      MAIL_USERNAME: ${MAIL_USERNAME:-no-reply@lecturelink.local}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      FIREBASE_ENABLED: ${FIREBASE_ENABLED:-false}
+      FIREBASE_STORAGE_BUCKET: ${FIREBASE_STORAGE_BUCKET:-}
     depends_on:
       configserver:
         condition: service_healthy
       eurekaserver:
         condition: service_healthy
+      lecturer-db:
+        condition: service_healthy
+      ai-match-service:
+        condition: service_healthy
     healthcheck:
-      test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1"
+      test: ["CMD-SHELL", "curl --fail --silent localhost:9000/actuator/health/readiness | grep -q UP"]
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 10s
+      start_period: 25s
+    networks: [lecturelink]
+
+  ai-match-service:
+    image: lecturelink/ai-match-service:latest
+    build: ../../ai-match-service
+    ports:
+      - "5000:5000"
     environment:
-      SPRING_APPLICATION_NAME: "cards"
-    extends:
-      file: common-config.yml
-      service: microservice-eureka-config
+      MODEL_DIR: /model
+      KEYCLOAK_ISSUER_URI: http://localhost:7080/realms/lecturelink
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/lecturelink/protocol/openid-connect/certs
+    volumes:
+      - ai-match-model:/model
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks: [lecturelink]
 
   gatewayserver:
-    image: "eazybytes/gatewayserver:s9"
-    container_name: gatewayserver-ms
+    image: lecturelink/gatewayserver:latest
+    build: ../../gatewayserver
     ports:
       - "8072:8072"
-    depends_on:
-      accounts:
-        condition: service_healthy
-      loans:
-        condition: service_healthy
-      cards:
-        condition: service_healthy
     environment:
-      SPRING_APPLICATION_NAME: "gatewayserver"
-    extends:
-      file: common-config.yml
-      service: microservice-eureka-config
+      CONFIG_SERVER_URL: http://configserver:8071/
+      EUREKA_URL: http://eurekaserver:8070/eureka/
+      KEYCLOAK_ISSUER_URI: http://localhost:7080/realms/lecturelink
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/lecturelink/protocol/openid-connect/certs
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      institute-service:
+        condition: service_healthy
+      lecturer-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent localhost:8072/actuator/health/readiness | grep -q UP"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 25s
+    networks: [lecturelink]
+
+volumes:
+  institute-data:
+  lecturer-data:
+  ai-match-model:
+  keycloak-data:
 
 networks:
-  eazybank:
-    driver: "bridge"
+  lecturelink:
+    driver: bridge
